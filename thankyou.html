@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cảm ơn - Animall</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/checkout.css" />
+  <!-- google fonts link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <section class="checkout" style="min-height:60vh;display:flex;align-items:center;justify-content:center;">
+    <div class="checkout-form" style="max-width:720px;">
+      <h2>Cảm ơn bạn đã đặt hàng!</h2>
+      <p>Đơn hàng của bạn đã được tiếp nhận và sẽ được xử lý trong thời gian sớm nhất.</p>
+      <p id="orderInfo" style="margin-top:8px;"></p>
+      <div class="actions" style="margin-top:16px;">
+        <a class="btn-outline" href="products.html">Tiếp tục mua sắm</a>
+        <a class="btn-primary" href="index.html">Về trang chủ</a>
+      </div>
+    </div>
+  </section>
+  <script>
+    const id = new URLSearchParams(location.search).get('id');
+    if(id){ document.getElementById('orderInfo').textContent = 'Mã đơn hàng: ' + id; }
+  </script>
+</body>
+</html>

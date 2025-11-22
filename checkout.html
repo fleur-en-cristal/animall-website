@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Trang chủ - Animall</title>
+        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="css/checkout.css"/>
+
+        <!-- boxicons link-->
+        <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+        <!-- google fonts link -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <a href="index.html" class="logo"><img src="image/2nd-logo.png" alt=""></a>
+
+            <ul class="navigation">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="index.html#services">Dịch vụ</a></li>
+                <li><a href="index.html#food">Sản phẩm</a></li>
+                <li><a href="index.html#review">Về chúng tôi</a></li>
+                <li><a href="index.html#post">Bài viết</a></li>
+            </ul>
+            <div class="head-btn">
+                <div class="nav-btn">
+                    <div class="log-reg">
+                        <a href="login.html">Đăng nhập / </a>
+                        <a href="register.html">Đăng ký</a>
+                    </div>
+                    <div class="head-icon">
+                        <button id="searchToggle" class="search-btn" type="button">
+                            <i class='bx bx-search'></i>
+                        </button>
+                        <a href="#" class="cart-link">
+                            <i class='bx bx-cart'></i>
+                            <span id="cartCount" class="cart-count" aria-live="polite">0</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="bx bx-menu" id="menu-icon">
+                    
+                </div>
+            </div>
+        </header>
+        <!-- Ô tìm kiếm sản phẩm -->
+        <div class="search-panel" id="searchPanel" aria-hidden="true">
+            <div class="search-inner">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Tìm sản phẩm..."
+                    autocomplete="off"
+                />
+                <button id="searchClose" class="search-close" type="button">&times;</button>
+            </div>
+
+            <div id="searchResults" class="search-results"></div>
+        </div>
+
+  <section class="checkout">
+    <h2>Thanh Toán</h2>
+
+    <div class="checkout-grid">
+      <!-- Thông tin khách hàng -->
+      <form id="checkoutForm" class="checkout-form" novalidate>
+        <h3>Thông tin nhận hàng</h3>
+        <div class="grid-two">
+          <div>
+            <label for="fullName">Họ và tên</label>
+            <input id="fullName" name="fullName" required placeholder="Nguyễn Văn A" />
+          </div>
+          <div>
+            <label for="phone">Số điện thoại</label>
+            <input id="phone" name="phone" required pattern="^\+?\d{9,13}$" placeholder="+84 912 345 678" />
+          </div>
+        </div>
+        <div class="grid-two">
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="ban@vidu.com" />
+          </div>
+          <div>
+            <label for="city">Tỉnh/Thành</label>
+            <input id="city" name="city" required placeholder="TP.HCM" />
+          </div>
+        </div>
+        <label for="address">Địa chỉ</label>
+        <input id="address" name="address" required placeholder="Số nhà, tên đường, phường/xã" />
+
+        <label for="note">Ghi chú (tuỳ chọn)</label>
+        <textarea id="note" name="note" rows="3" placeholder="Hẹn giờ giao..."></textarea>
+
+        <h3>Phương thức giao hàng</h3>
+        <div class="radios">
+          <label><input type="radio" name="ship" value="standard" checked> Tiêu chuẩn (30.000 VND) – miễn phí đơn ≥ 500.000 VND</label>
+          <label><input type="radio" name="ship" value="express"> Nhanh (60.000 VND)</label>
+          <label><input type="radio" name="ship" value="pickup"> Nhận tại cửa hàng (0 VND)</label>
+        </div>
+
+        <h3>Phương thức thanh toán</h3>
+        <div class="radios">
+          <label><input type="radio" name="pay" value="cod" checked> COD (Thanh toán khi nhận hàng)</label>
+          <label><input type="radio" name="pay" value="bank"> Chuyển khoản ngân hàng</label>
+          <label><input type="radio" name="pay" value="card" disabled> Thẻ/Online (sắp ra mắt)</label>
+        </div>
+
+        <div class="actions">
+          <a href="products.html" class="btn-outline">← Tiếp tục mua sắm</a>
+          <button type="submit" class="btn-primary">Đặt hàng</button>
+        </div>
+      </form>
+
+      <!-- Tóm tắt đơn hàng -->
+      <aside class="checkout-summary">
+        <h3>Đơn hàng của bạn</h3>
+        <div id="summaryItems" class="summary-items"></div>
+
+        <div class="summary-line">
+          <span>Tạm tính</span>
+          <strong id="sumSubtotal">0 VND</strong>
+        </div>
+        <div class="summary-line">
+          <span>Giảm giá</span>
+          <strong id="sumDiscount">0 VND</strong>
+        </div>
+        <div class="summary-line">
+          <span>Phí vận chuyển</span>
+          <strong id="sumShipping">0 VND</strong>
+        </div>
+        <div class="summary-total">
+          <span>Tổng cộng</span>
+          <strong id="sumTotal">0 VND</strong>
+        </div>
+
+        <div class="coupon">
+          <input id="coupon" placeholder="Mã giảm giá (ví dụ: ANIMALL10)" />
+          <button id="applyCoupon" class="btn-outline small">Áp dụng</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Drawer giỏ hàng (dùng chung) -->
+  <div id="cartDrawer" class="cart-drawer" aria-hidden="true">
+    <div class="cart-overlay" data-cart-close></div>
+    <div class="cart-panel" role="dialog" aria-labelledby="cartTitle">
+      <div class="cart-header">
+        <h3 id="cartTitle">Giỏ Hàng</h3>
+        <button class="cart-close" data-cart-close aria-label="Đóng giỏ">&times;</button>
+      </div>
+      <div id="cartItems" class="cart-items"></div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Tổng:</span>
+          <strong id="cartTotal">0 VND</strong>
+        </div>
+        <div class="cart-actions">
+          <button id="cartClear" class="btn-outline">Xoá tất cả</button>
+          <button id="cartCheckout" class="btn-primary">Thanh toán</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <p>© 2025 <span>Animall</span>. All rights reserved.</p>
+    </div>
+    <div class="footer-right">
+      <p>Phương thức thanh toán</p>
+      <img src="image/footer-img.png" alt="footer-img.png">
+    </div>
+  </div>
+  <script src="js/script.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

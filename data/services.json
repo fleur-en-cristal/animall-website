@@ -1,0 +1,42 @@
+{
+  "grooming": {
+    "id": "sv-grooming",
+    "title": "Thẩm mỹ thú cưng",
+    "price": 250000,
+    "desc": "Trải nghiệm dịch vụ Grooming & Spa cao cấp với quy trình khép kín: Tắm vệ sinh, cắt tỉa nghệ thuật, chăm sóc móng và tai chuyên biệt. Chúng tôi sử dụng các dòng sản phẩm dưỡng lông hàng đầu giúp phục hồi hư tổn, mang lại vẻ ngoài hoàn hảo và sức khỏe dẻo dai cho thú cưng của bạn ngay từ lần trải nghiệm đầu tiên.",
+    "icon": "image/ser-scissors.png",
+    "cta": "Chọn dịch vụ"
+  },
+  "boarding": {
+    "id": "sv-boarding",
+    "title": "Nội trú thú cưng",
+    "price": 300000,
+    "desc": "Dịch vụ lưu trú an toàn với không gian sạch sẽ, điều hòa thoáng mát, theo dõi camera và lịch trình ăn – chơi – ngủ khoa học. Nhân viên túc trực 24/7 đảm bảo thú cưng được chăm sóc như ở nhà.",
+    "icon": "image/ser-scissors.png",
+    "cta": "Đặt chỗ ngay"
+  },
+  "training": {
+    "id": "sv-training",
+    "title": "Huấn luyện thú cưng",
+    "price": 350000,
+    "desc": "Chương trình huấn luyện cơ bản và nâng cao: đi đúng chỗ, ngồi/đứng/ở lại, gọi tên – lại gần, giao tiếp & xã hội hóa. Giáo trình tích cực, tôn trọng tính cách riêng của từng bé.",
+    "icon": "image/ser-scissors.png",
+    "cta": "Đăng ký khóa học"
+  },
+  "health": {
+    "id": "sv-health",
+    "title": "Sức khỏe thú cưng",
+    "price": 200000,
+    "desc": "Khám tổng quát, tiêm phòng, tẩy giun, vệ sinh tai – răng, tư vấn dinh dưỡng. Hợp tác cùng các phòng khám đạt chuẩn để đảm bảo chẩn đoán & phác đồ điều trị chuẩn xác.",
+    "icon": "image/ser-scissors.png",
+    "cta": "Đặt lịch khám"
+  },
+  "nanny": {
+    "id": "sv-nanny",
+    "title": "Bảo mẫu thú cưng",
+    "price": 180000,
+    "desc": "Dịch vụ trông giữ tại nhà theo giờ/ngày, cho ăn – cho uống – chơi cùng – dọn vệ sinh. Báo cáo hình ảnh/video định kỳ để bạn yên tâm dù bận rộn hay đi công tác.",
+    "icon": "image/ser-scissors.png",
+    "cta": "Gọi bảo mẫu"
+  }
+}
