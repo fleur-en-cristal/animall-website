@@ -1,12 +1,10 @@
 # Animall – Website Bán Đồ & Dịch Vụ Thú Cưng
 
----
 
 ## 1. Tên dự án:
 
 Website bán đồ & dịch vụ cho thú cưng **Animall** (Front-end: HTML/CSS/JavaScript).
 
----
 
 ## 2. Giới thiệu:
 
@@ -25,7 +23,7 @@ Dự án xây dựng một website bán hàng dành cho thú cưng, cho phép ng
 > **Link demo GitHub Pages (sau khi bật Pages):**  
 > `https://fleur-en-cristal.github.io/animall-website/`
 
----
+
 
 ## 3. Thành viên nhóm:
 
@@ -59,7 +57,7 @@ Dự án xây dựng một website bán hàng dành cho thú cưng, cho phép ng
   - Git & GitHub (quản lý mã nguồn, public repo).
   - GitHub Pages (deploy website tĩnh).
 
----
+
 
 ## 5. Cấu trúc thư mục chính:
 
@@ -93,4 +91,3 @@ animall-website/
 └── image/
     ├── ...             # Toàn bộ hình ảnh giao diện, sản phẩm, logo
 
-![Trang chủ Animall](image/demo-home.png)
