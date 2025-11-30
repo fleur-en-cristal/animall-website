@@ -6,7 +6,7 @@
     "dateText": "11 Tháng 2 2025",
     "image": "image/lt-1.jpg",
     "excerpt": "Hướng dẫn chọn giống, độ tuổi và tính cách phù hợp với gia đình của bạn.",
-    "url": "#"
+    "content": "<p>Việc lựa chọn một thú cưng phù hợp không chỉ dựa vào sở thích cá nhân mà còn phụ thuộc vào lối sống, không gian sống và khả năng tài chính của bạn.</p><h3>1. Xem xét không gian sống</h3><p>Nếu bạn ở chung cư nhỏ, hãy cân nhắc nuôi mèo hoặc các giống chó nhỏ ít sủa. Nếu bạn có sân vườn rộng, các giống chó lớn năng động sẽ là lựa chọn tuyệt vời.</p><h3>2. Thời gian chăm sóc</h3><p>Chó cần được dắt đi dạo mỗi ngày, trong khi mèo có thể tự lập hơn. Hãy đảm bảo bạn có đủ thời gian dành cho người bạn mới này nhé.</p>"
   },
   {
     "id": "nhung-dieu-can-biet",
@@ -15,7 +15,7 @@
     "dateText": "25 Tháng 4 2025",
     "image": "image/lt-2.jpg",
     "excerpt": "Những lưu ý quan trọng khi nuôi thú cưng lần đầu.",
-    "url": "#"
+    "content": "<p>Nuôi thú cưng lần đầu có thể khiến bạn bỡ ngỡ. Dưới đây là những điều cốt lõi bạn cần chuẩn bị.</p><h3>Tiêm phòng đầy đủ</h3><p>Đừng quên lịch tiêm phòng vaccine và tẩy giun định kỳ. Đây là lá chắn bảo vệ sức khỏe tốt nhất cho boss.</p><h3>Chế độ dinh dưỡng</h3><p>Không cho thú cưng ăn thức ăn của người có gia vị. Hãy chọn hạt hoặc pate phù hợp với độ tuổi.</p>"
   },
   {
     "id": "suc-khoe-tinh-than",
@@ -24,7 +24,7 @@
     "dateText": "21 Tháng 6 2025",
     "image": "image/lt-3.jpg",
     "excerpt": "Vì sao thú cưng giúp chúng ta giảm stress và cảm thấy hạnh phúc hơn?",
-    "url": "#"
+    "content": "<p>Khoa học đã chứng minh việc vuốt ve chó mèo giúp cơ thể tiết ra oxytocin - hormone hạnh phúc.</p><p>Những người nuôi thú cưng thường có chỉ số huyết áp ổn định hơn và ít gặp các vấn đề về trầm cảm hơn so với người không nuôi.</p>"
   },
   {
     "id": "yeu-thuong-cham-soc",
@@ -33,7 +33,7 @@
     "dateText": "03 Tháng 10 2025",
     "image": "image/lt-4.jpg",
     "excerpt": "Những thói quen nhỏ mỗi ngày để thú cưng luôn khỏe mạnh.",
-    "url": "#"
+    "content": "<p>Yêu thương không chỉ là lời nói, mà là hành động chăm sóc mỗi ngày.</p><ul><li>Chải lông thường xuyên để tránh rối và kiểm tra các bệnh ngoài da.</li><li>Vệ sinh khay cát hoặc chuồng trại hàng ngày.</li><li>Dành ít nhất 15 phút mỗi ngày để chơi đùa cùng boss.</li></ul>"
   },
   {
     "id": "tam-cho-sai-lam",
@@ -42,16 +42,16 @@
     "dateText": "15 Tháng 3 2025",
     "image": "image/lt-5.jpg",
     "excerpt": "Nhiều boss bị dị ứng, rụng lông chỉ vì tắm không đúng cách.",
-    "url": "#"
+    "content": "<p>Tắm chó tưởng chừng đơn giản nhưng lại rất dễ mắc sai lầm.</p><h3>1. Dùng sữa tắm người</h3><p>Độ pH da của người và chó khác nhau. Dùng sữa tắm người sẽ làm khô da chó, gây ngứa và rụng lông.</p><h3>2. Tắm quá thường xuyên</h3><p>Trừ khi quá bẩn, bạn chỉ nên tắm cho chó 1-2 tuần/lần để giữ lớp dầu tự nhiên trên da.</p>"
   },
   {
     "id": "quen-moi-truong-moi",
-    "title": "Cách Giúp Thú Cưng Làm Quen Môi Trường Mới",
+    "title": "Giúp Thú Cưng Quen Môi Trường Mới",
     "date": "2025-05-07",
     "dateText": "07 Tháng 5 2025",
     "image": "image/lt-6.jpg",
     "excerpt": "Tips dành cho thú cưng mới chuyển nhà hoặc mới nhận nuôi.",
-    "url": "#"
+    "content": "<p>Khi về nhà mới, thú cưng thường bị stress. Hãy để chúng tự do khám phá từng phòng một thay vì ép buộc.</p><p>Mang theo đồ chơi hoặc chăn cũ có mùi quen thuộc sẽ giúp chúng an tâm hơn rất nhiều.</p>"
   },
   {
     "id": "chuan-bi-don-boss",
@@ -60,7 +60,7 @@
     "dateText": "28 Tháng 1 2025",
     "image": "image/lt-7.jpg",
     "excerpt": "Những vật dụng tối thiểu cần có cho thú cưng mới.",
-    "url": "#"
+    "content": "<p>Trước khi đón thành viên mới, hãy chắc chắn bạn đã có:</p><ul><li>Bát ăn, bát nước.</li><li>Thức ăn phù hợp độ tuổi.</li><li>Chuồng hoặc nệm ngủ.</li><li>Đồ chơi gặm (cho chó) hoặc bàn cào móng (cho mèo).</li></ul>"
   },
   {
     "id": "dinh-duong-meo-con",
@@ -69,6 +69,6 @@
     "dateText": "19 Tháng 8 2025",
     "image": "image/lt-8.jpg",
     "excerpt": "Chế độ ăn theo từng giai đoạn phát triển của mèo con.",
-    "url": "#"
+    "content": "<p>Mèo con cần lượng protein và chất béo cao hơn mèo trưởng thành để phát triển cơ bắp và xương khớp.</p><p>Giai đoạn dưới 2 tháng: Nên bú mẹ hoặc dùng sữa công thức dành riêng cho mèo. Không dùng sữa bò tươi vì mèo không tiêu hóa được lactose.</p>"
   }
 ]

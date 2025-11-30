@@ -14,37 +14,9 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     </head>
     <body>
-        <header>
-            <a href="index.html" class="logo"><img src="image/2nd-logo.png" alt=""></a>
-
-            <ul class="navigation">
-                <li><a href="index.html">Trang chủ</a></li>
-                <li><a href="index.html#services">Dịch vụ</a></li>
-                <li><a href="index.html#food">Sản phẩm</a></li>
-                <li><a href="index.html#review">Về chúng tôi</a></li>
-                <li><a href="index.html#post">Bài viết</a></li>
-            </ul>
-            <div class="head-btn">
-                <div class="nav-btn">
-                    <div class="log-reg">
-                        <a href="login.html">Đăng nhập / </a>
-                        <a href="register.html">Đăng ký</a>
-                    </div>
-                    <div class="head-icon">
-                        <button id="searchToggle" class="search-btn" type="button">
-                            <i class='bx bx-search'></i>
-                        </button>
-                        <a href="#" class="cart-link">
-                            <i class='bx bx-cart'></i>
-                            <span id="cartCount" class="cart-count" aria-live="polite">0</span>
-                        </a>
-                    </div>
-                </div>
-                <div class="bx bx-menu" id="menu-icon">
-                    
-                </div>
-            </div>
-        </header>
+        <!-- header, search, cart dùng chung -->
+        <script src="partials/header.js"></script>
+        
         <!-- Ô tìm kiếm sản phẩm -->
         <div class="search-panel" id="searchPanel" aria-hidden="true">
             <div class="search-inner">
@@ -88,100 +60,17 @@
         </section>
 
 
-        <!-- liên hệ -->
-        <section class="contact">
-            <div class="main-cont">
-                <div class="cont-1">
-                    <img src="image/2nd-logo.png" alt="2nd-logo.png">
-                    <p>Địa chỉ: 123 Đường ABC, Quận XYZ, Thành phố HCM</p>
-                    <p>Email: contact@animall.com</p>
-                    <p>Điện thoại: +84 123 456 789</p>
+        <!-- section liên hệ dùng chung-->
+        <script src="partials/contact.js"></script>
+        <!-- Footer dùng chung -->
+        <script src="partials/footer.js"></script>
 
-                    <h5>Đăng Ký Nhận Bản Tin</h5>
-                    <input type="text" placeholder="Nhập email của bạn">
-                </div>
-
-                <div class="cont-2">
-                    <h3>Sản phẩm mới</h3>
-
-                    <div class="humb-cont" id="recentProducts">
-
-                    </div>
-                </div>
-
-                <div class="cont-3">
-                    <h3>Liên kết nhanh</h3>
-                    <a href="#">Bảo mật</a>
-                    <a href="#">Đổi trả</a>
-                    <a href="#">Điều khoản dịch vụ</a>
-                    <a href="contact.html" target="_blank">Liên hệ</a>
-                    <a href="index.html#post">Tin tức</a>
-                </div>
-
-                <div class="cont-3 map-card">
-                    <h3>Bản đồ &amp; Chỉ đường</h3>
-                
-                    <div class="map-wrap">
-                        <!-- Sửa địa chỉ trong q= nếu bạn đổi địa chỉ công ty -->
-                        <iframe loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                            src="https://www.google.com/maps?q=123+%C4%90%C6%B0%E1%BB%9Dng+ABC%2C+Qu%E1%BA%ADn+XYZ%2C+Th%C3%A0nh+ph%E1%BB%91+HCM&z=16&output=embed">
-                        </iframe>
-                    </div>
-                
-                    <div class="map-actions">
-                        <!-- Nút mở chỉ đường (Google Maps) -->
-                        <a class="btn" target="_blank" rel="noopener"
-                            href="https://www.google.com/maps/dir/?api=1&destination=123+%C4%90%C6%B0%E1%BB%9Dng+ABC%2C+Qu%E1%BA%ADn+XYZ%2C+Th%C3%A0nh+ph%E1%BB%91+HCM">
-                            Mở Google Maps
-                        </a>
-                
-                        <!-- (Tuỳ chọn) Nút Apple Maps cho iOS/macOS -->
-                        <a class="btn btn-outline" target="_blank" rel="noopener"
-                            href="https://maps.apple.com/?daddr=123+%C4%90%C6%B0%E1%BB%9Dng+ABC%2C+Qu%E1%BA%ADn+XYZ%2C+Th%C3%A0nh+ph%E1%BB%91+HCM">
-                            Mở Apple Maps
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-        <!-- chân trang -->
-        <div class="footer">
-            <div class="footer-left">
-                <p>© 2025 <span>Animall</span>. All rights reserved.</p>
-            </div>
-            <div class="footer-right">
-                <p>Phương thức thanh toán</p>
-                <img src="image/footer-img.png" alt="footer-img.png">
-            </div>
-        </div>
         <!-- javascript link -->
         <script src="js/script.js"></script>
+        
         <!-- giỏ hàng -->
         <script src="js/cart.js"></script>
-        <div id="cartDrawer" class="cart-drawer" aria-hidden="true">
-            <div class="cart-overlay" data-cart-close></div>
-            <div class="cart-panel" role="dialog" aria-labelledby="cartTitle">
-                <div class="cart-header">
-                    <h3 id="cartTitle">Giỏ Hàng</h3>
-                    <button class="cart-close" data-cart-close aria-label="Đóng giỏ">&times;</button>
-                </div>
-        
-                <div id="cartItems" class="cart-items"></div>
-        
-                <div class="cart-footer">
-                    <div class="cart-total">
-                        <span>Tổng:</span>
-                        <strong id="cartTotal">0 VND</strong>
-                    </div>
-                    <div class="cart-actions">
-                        <button id="cartClear" class="btn-outline">Xoá tất cả</button>
-                        <a id="cartCheckout" href="checkout.html" class="btn-primary">Thanh toán</a>
 
-                    </div>
-                </div>
-            </div>
-        </div>
 
     </body>
 </html>

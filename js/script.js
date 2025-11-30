@@ -2,9 +2,9 @@ const header = document.querySelector("header");
 window.addEventListener("scroll", function() {
     header.classList.toggle("sticky", window.scrollY > 0);
 });
-// dịch vụ
+//***DỊCH VỤ***//
 document.addEventListener('DOMContentLoaded', function () {
-  // Mapping nội dung cho từng dịch vụ
+  // mapping nội dung cho từng dịch vụ
   const SERVICE_CONTENT = {
     grooming: {
       id: 'sv-grooming',
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let currentServiceKey = 'grooming';
 
-  // Hàm đổi nội dung theo dịch vụ
+  /**ĐỔI NỘI DUNG THEO DỊCH VỤ**/
   function renderService(key) {
     const data = SERVICE_CONTENT[key];
     if (!data) return;
@@ -74,12 +74,12 @@ document.addEventListener('DOMContentLoaded', function () {
       serviceBtn.innerHTML = `${data.cta}<span><i class='bx bxs-cat'></i></span>`;
     }
 
-    // Active state bên trái
+    // active state bên trái
     document.querySelectorAll('.serv-detls .detls')
       .forEach(el => el.classList.toggle('active', el.dataset.key === key));
   }
 
-  // Click / hover menu bên trái
+  // click / hover menu bên trái
   document.querySelectorAll('.serv-detls .detls').forEach(el => {
     const key = el.dataset.key;
     el.setAttribute('tabindex', '0');
@@ -89,18 +89,25 @@ document.addEventListener('DOMContentLoaded', function () {
     el.addEventListener('focus',      () => renderService(key));
   });
 
-  // Bấm nút "Chọn dịch vụ / Đăng ký khóa học / ..."
+  // bấm nút "Chọn dịch vụ / Đăng ký khóa học / ..."
   if (serviceBtn) {
     serviceBtn.addEventListener('click', function (e) {
       e.preventDefault();
-
+      //code kiểm tra đăng nhập
+      const user = localStorage.getItem('currentUser');
+      if (!user) {
+          if (confirm("Bạn cần đăng nhập để đăng ký dịch vụ.\nĐến trang đăng nhập ngay?")) {
+              window.location.href = 'login.html';
+          }
+          return; // dừng lại
+      }
       const data = SERVICE_CONTENT[currentServiceKey];
       if (!data || !window.addToCart) {
         console.warn('Chưa tìm thấy hàm window.addToCart trong cart.js');
         return;
       }
 
-      // Thêm vào giỏ với đúng field mà cart.js đang dùng (title, price, img)
+      // thêm vào giỏ với đúng field mà cart.js đang dùng (title, price, img)
       window.addToCart({
         id: data.id,
         title: data.title,
@@ -109,18 +116,16 @@ document.addEventListener('DOMContentLoaded', function () {
         type: 'Dịch vụ'   // 👈 thêm field type
       });
 
-      // Mở luôn giỏ hàng cho user thấy
+      // mở luôn giỏ hàng cho user thấy
       if (window.Cart && typeof window.Cart.open === 'function') {
         window.Cart.open();
       }
     });
   }
 
-  // Mặc định hiển thị "Thẩm mỹ"
+  // mặc định hiển thị "Thẩm mỹ"
   renderService('grooming');
 });
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
   const grid = document.getElementById('productGrid');
@@ -130,26 +135,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const DATA_URL = 'data/products.json';
   const state = { data: null, loading: false };
 
-  // Tạo 1 card theo đúng markup/các class đang dùng
+  // tạo 1 card theo đúng markup/các class đang dùng
   const card = (p, idx, catKey) => `
-      <div class="row" id="prod-${catKey}-${idx}">
+    <div class="row" 
+         id="prod-${catKey}-${idx}" 
+         data-id="prod-${catKey}-${idx}" 
+         data-cat="${catKey}"
+         style="cursor: pointer;"
+         onclick="if(!event.target.closest('a')) window.location.href='product-detail.html?cat=${catKey}&id=${idx}'">
+           
           <img src="${p.img}" alt="${p.alt}">
-          <div class="icon"><a href="#"><i class='bx bx-heart'></i></a></div>
+          
+          <div class="icon">
+              <a href="#"><i class='bx bx-heart'></i></a>
+          </div>
+          
           <div class="hovr">
               <a href="#"><i class='bx bx-cart-alt'></i></a>
               <a href="#"><i class='bx bx-low-vision'></i></a>
               <a href="#"><i class='bx bx-sync'></i></a>
           </div>
+          
           <div class="btm-text">
               <p>${p.tag}</p>
               <h5>${p.title}</h5>
               <div class="price">
                   <div class="pri-1"><h6>${p.price} <span>${p.oldPrice || ''}</span></h6></div>
-                  <div class="rating"><a href="#"><i class='bx bxs-star'></i>${p.rate || ''}</a></div>
+                  <div class="rating">
+                      <a href="#"><i class='bx bxs-star'></i>${p.rate || ''}</a>
+                  </div>
               </div>
           </div>
       </div>
-`;
+  `;
 
   // Fisher–Yates shuffle ⇒ lấy ngẫu nhiên n phần tử
   function sampleRandom(arr, n) {
@@ -173,11 +191,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function render(catKey, random = false) {
     const listAll = (state.data && state.data[catKey]) || [];
-    const list = random ? sampleRandom(listAll, 8) : listAll.slice(0, 8);
+
+    //***Gắn số thứ tự gốc originalIndex vào từng sản phẩm trước khi random
+    // để dù có bị xáo trộn đi đâu, nó vẫn nhớ vị trí nhà của nó
+    const listWithIndex = listAll.map((item, originalIndex) => ({
+        ...item,
+        originalIndex: originalIndex // lưu lại số thứ tự gốc (0, 1, 2, 3...)
+    }));
+
+    //*** xong bước trên thì bây giờ mới thực hiện random hoặc cắt lấy 8 sản phẩm
+    const list = random ? sampleRandom(listWithIndex, 8) : listWithIndex.slice(0, 8);
+
+    //***khi tạo card, truyền p.originalIndex thay vì idx của vòng lặp
     grid.innerHTML = list.length
-      ? list.map((p, idx) => card(p, idx, catKey)).join('')
+      ? list.map((p) => card(p, p.originalIndex, catKey)).join('')
       : '<p style="padding:1rem;opacity:.7">Chưa có sản phẩm cho danh mục này.</p>';
   }
+
   const hash = window.location.hash;
   if (hash && hash.startsWith('#prod-')) {
     const target = document.querySelector(hash);
@@ -188,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Mặc định: pet thứ nhất (nút đầu tiên)
+  // mặc định: pet thứ nhất là nút đầu tiên bên trái
   (async () => {
     try {
       grid.innerHTML = `<p style="padding:1rem">Đang tải...</p>`;
@@ -201,8 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })();
 
-  // Hover: hiển thị 8 NGẪU NHIÊN của pet tương ứng
-  // Focus: hỗ trợ bàn phím
+  // hover: hiển thị 8 ngẫu nhiên của pet tương ứng
+  // focus: hỗ trợ bàn phím
   tabs.forEach((btn) => {
     btn.setAttribute('tabindex', '0');
 
@@ -220,95 +250,102 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('focus', preview);
   });
 
-  // Click: sang trang danh mục đầy đủ (products.html?cat=...)
-  // (giữ nguyên href sẵn có; không cần chặn)
+  // click: sang trang danh mục đầy đủ (products.html?cat=...)
+  // giữ nguyên href sẵn có k chặn
 });
-// =============== BÀI VIẾT: TẤT CẢ + MỚI NHẤT ===============
+/**xử lý ds bài viết & chi tiết*/
+
+// **hiển thị danh sách bài viết cho cả trang index và posts
 document.addEventListener('DOMContentLoaded', function () {
-  const allContainer    = document.getElementById('allPosts');    // dùng ở posts.html
-  const latestContainer = document.getElementById('latestPosts'); // dùng ở index.html + posts.html
+    const allContainer    = document.getElementById('allPosts');    // trang posts.html
+    const latestContainer = document.getElementById('latestPosts'); // trang index.html
 
-  // Nếu trang hiện tại không có 2 khu này thì thôi, không làm gì
-  if (!allContainer && !latestContainer) return;
+    // nếu trang hiện tại k có khung bài viết nào thì dừng
+    if (!allContainer && !latestContainer) return;
 
-  fetch('data/posts.json')
-    .then(function (res) {
-      if (!res.ok) throw new Error('Không load được posts.json');
-      return res.json();
-    })
-    .then(function (posts) {
-      if (!Array.isArray(posts) || posts.length === 0) {
-        const emptyHtml =
-          "<p style='padding:1rem;opacity:.7'>Chưa có bài viết.</p>";
-        if (allContainer)    allContainer.innerHTML    = emptyHtml;
-        if (latestContainer) latestContainer.innerHTML = emptyHtml;
-        return;
-      }
+    fetch('data/posts.json')
+        .then(res => res.json())
+        .then(posts => {
+            if (!Array.isArray(posts) || posts.length === 0) return;
 
-      // -------- TẤT CẢ BÀI VIẾT (posts.html) --------
-      if (allContainer) {
-        const sorted = posts.slice().sort(function (a, b) {
-          if (!a.date || !b.date) return 0;
-          return new Date(b.date) - new Date(a.date); // mới -> cũ
-        });
+            // tạo HTML cho 1 bài viết link trỏ về post-detail.html
+            const createPostHTML = (post) => `
+                <div class="box">
+                    <div class="box-img">
+                        <a href="post-detail.html?id=${post.id}">
+                            <img src="${post.image}" alt="${post.title}">
+                        </a>
+                    </div>
+                    <p>${post.dateText || ''}</p>
+                    <h4><a href="post-detail.html?id=${post.id}" style="color:inherit">${post.title}</a></h4>
+                    
+                    <div class="box-btn">
+                        <a href="post-detail.html?id=${post.id}">
+                            Đọc thêm <span><i class='bx bx-right-arrow-alt'></i></span>
+                        </a>
+                    </div>
+                </div>
+            `;
 
-        allContainer.innerHTML = sorted.map(function (post) {
-          return `
-            <div class="box">
-              <div class="box-img">
-                <img src="${post.image}" alt="${post.title}">
-              </div>
-              <p>${post.dateText || ''}</p>
-              <h4>${post.title}</h4>
-              <div class="box-btn">
-                <a href="${post.url || '#'}">
-                  Đọc thêm <span><i class='bx bx-right-arrow-alt'></i></span>
-                </a>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
+            // nếu đang ở trang posts.html -> hiện hết tất cả bài
+            if (allContainer) {
+                // sắp xếp bài mới nhất lên đầu
+                const sorted = posts.slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+                allContainer.innerHTML = sorted.map(createPostHTML).join('');
+            }
 
-      // -------- 4 BÀI MỚI NHẤT / NGẪU NHIÊN (index.html + posts.html) --------
-      if (latestContainer) {
-        const shuffled = posts.slice().sort(function () {
-          return Math.random() - 0.5;
-        });
-        const selected = shuffled.slice(0, 4);
-
-        latestContainer.innerHTML = selected.map(function (post) {
-          return `
-            <div class="box">
-              <div class="box-img">
-                <img src="${post.image}" alt="${post.title}">
-              </div>
-              <p>${post.dateText || ''}</p>
-              <h4>${post.title}</h4>
-              <div class="box-btn">
-                <a href="${post.url || '#'}">
-                  Đọc thêm <span><i class='bx bx-right-arrow-alt'></i></span>
-                </a>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-    })
-    .catch(function (err) {
-      console.error(err);
-      const errorHtml =
-        "<p style='padding:1rem;color:#b00020'>Không thể tải danh sách bài viết.</p>";
-      if (allContainer)    allContainer.innerHTML    = errorHtml;
-      if (latestContainer) latestContainer.innerHTML = errorHtml;
-    });
+            // nếu đang ở trang index.html (hoặc footer) -> hiện 4 bài ngẫu nhiên
+            if (latestContainer) {
+                const shuffled = posts.slice().sort(() => Math.random() - 0.5).slice(0, 4);
+                latestContainer.innerHTML = shuffled.map(createPostHTML).join('');
+            }
+        })
+        .catch(err => console.error('Lỗi tải bài viết:', err));
 });
-// ==================== AUTH: Đăng nhập / Đăng ký / Đăng xuất ====================
+
+//**xử lý trang CHI TIẾT BÀI VIẾT post-detail.html
+document.addEventListener('DOMContentLoaded', async () => {
+    const detailTitle = document.getElementById('detailTitle');
+    
+    // nếu k tìm thấy tiêu đề (tức là k phải trang chi tiết) thì dừng
+    if (!detailTitle) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get('id');
+
+    if (!postId) {
+        detailTitle.textContent = "Không tìm thấy bài viết!";
+        return;
+    }
+
+    try {
+        const res = await fetch('data/posts.json');
+        const posts = await res.json();
+        const post = posts.find(p => p.id === postId);
+
+        if (!post) {
+            detailTitle.textContent = "Bài viết không tồn tại!";
+            return;
+        }
+
+        // đổ dữ liệu vào giao diện
+        document.title = `${post.title} - Animall`;
+        detailTitle.textContent = post.title;
+        document.getElementById('detailDate').textContent = post.dateText;
+        document.getElementById('detailImg').src = post.image;
+        document.getElementById('detailContent').innerHTML = post.content || "<p>Nội dung đang cập nhật...</p>";
+
+    } catch (err) {
+        console.error(err);
+        detailTitle.textContent = "Lỗi tải dữ liệu!";
+    }
+});
+// ***auth: đăng nhập / đăng ký / đăng xuất
 document.addEventListener('DOMContentLoaded', function () {
   const AUTH_KEY = 'currentUser';
   const LOCAL_USERS_KEY = 'localUsers';
 
-  // --- Hàm load danh sách user từ users.json + localStorage ---
+  // *** hàm load danh sách user từ users.json + localStorage ***
   async function loadUsers() {
     let baseUsers = [];
     try {
@@ -329,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return [...baseUsers, ...extra];
   }
 
-  // --- Cập nhật header (Đăng nhập/Đăng ký hoặc Xin chào/Đăng xuất) ---
+  // *** cập nhật header (đăng nhập/đăng ký hoặc xin chào/đăng xuất) ***
   const logReg = document.querySelector('.log-reg');
   if (logReg) {
     const current = localStorage.getItem(AUTH_KEY);
@@ -360,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // --- Xử lý ĐĂNG NHẬP (login.html) ---
+  // *** xử lý đăng nhập (login.html) ***
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
     const emailInput = document.getElementById('loginEmail');
@@ -391,19 +428,19 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // Lưu thông tin user vào localStorage
+      // lưu thông tin user vào localStorage
       localStorage.setItem(AUTH_KEY, JSON.stringify({
         id: found.id,
         name: found.name,
         email: found.email
       }));
 
-      // Chuyển về trang chủ (hoặc trang trước)
+      // chuyển về trang chủ (hoặc trang trước)
       window.location.href = 'index.html';
     });
   }
 
-  // --- Xử lý ĐĂNG KÝ (register.html) ---
+  // *** xử lý đăng ký (register.html) ***
   const registerForm = document.getElementById('registerForm');
   if (registerForm) {
     const nameInput  = document.getElementById('regName');
@@ -439,7 +476,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // Lưu user mới vào localStorage (không ghi vào users.json được)
+      // lưu user mới vào localStorage (k ghi vào users.json được)
       let extra = [];
       try {
         const stored = localStorage.getItem(LOCAL_USERS_KEY);
@@ -468,10 +505,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-//script của products.html
+//***script của products.html
 document.addEventListener('DOMContentLoaded', async () => {
+    //***kiểm tra xem có phải trang products.html k
+    const grid = document.getElementById('catalogGrid');
+    if (!grid) return; // nếu k có khung lưới này thì dừng ngay
+
     const params = new URLSearchParams(location.search);
     const cat = params.get('cat') || 'dog';
+    
+    // bản đồ tên danh mục
     const titleMap = {
         dog: 'Sản phẩm cho Cún',
         cat: 'Sản phẩm cho Mèo',
@@ -480,47 +523,64 @@ document.addEventListener('DOMContentLoaded', async () => {
         hamster: 'Sản phẩm cho Hamster'
     };
 
-    const grid = document.getElementById('catalogGrid');
     const title = document.getElementById('catalogTitle');
-    title.textContent = titleMap[cat] || 'Tất cả sản phẩm';
+    if (title) title.textContent = titleMap[cat] || 'Tất cả sản phẩm';
 
     grid.innerHTML = '<p style="padding:1rem">Đang tải...</p>';
+    
     try {
         const res = await fetch('data/products.json', { cache: 'no-store' });
         if (!res.ok) throw new Error('Không tải được dữ liệu sản phẩm');
         const data = await res.json();
         const list = data[cat] || [];
 
+        //***hàm tạo Card sản phẩm
         const card = (p, idx) => `
-            <div class="row" id="prod-${cat}-${idx}">
+            <div class="row" 
+                 id="prod-${cat}-${idx}"
+                 data-id="prod-${cat}-${idx}" 
+                 data-cat="${cat}"
+                 style="cursor: pointer;"
+                 onclick="if(!event.target.closest('a')) window.location.href='product-detail.html?cat=${cat}&id=${idx}'">
+                 
               <img src="${p.img}" alt="${p.alt}">
-              <div class="icon"><a href="#"><i class='bx bx-heart'></i></a></div>
+              
+              <div class="icon">
+                  <a href="#"><i class='bx bx-heart'></i></a>
+              </div>
+              
               <div class="hovr">
                   <a href="#"><i class='bx bx-cart-alt'></i></a>
                   <a href="#"><i class='bx bx-low-vision'></i></a>
                   <a href="#"><i class='bx bx-sync'></i></a>
               </div>
+              
               <div class="btm-text">
                   <p>${p.tag}</p>
                   <h5>${p.title}</h5>
                   <div class="price">
-                  <div class="pri-1"><h6>${p.price} <span>${p.oldPrice || ''}</span></h6></div>
-                  <div class="rating"><a href="#"><i class='bx bxs-star'></i>${p.rate || ''}</a></div>
+                      <div class="pri-1"><h6>${p.price} <span>${p.oldPrice || ''}</span></h6></div>
+                      <div class="rating">
+                          <a href="#"><i class='bx bxs-star'></i>${p.rate || ''}</a>
+                      </div>
                   </div>
               </div>
             </div>
         `;
+
         grid.innerHTML = list.length
-            ? list.map(card).join('')
+            ? list.map((p, idx) => card(p, idx)).join('')
             : '<p style="padding:1rem;opacity:.7">Chưa có sản phẩm cho danh mục này.</p>';
+            
     } catch (e) {
         grid.innerHTML = `<p style="padding:1rem;color:#b00020">Lỗi: ${e.message}</p>`;
     }
 });
-// ========== SẢN PHẨM GẦN ĐÂY Ở FOOTER ==========
+
+// *** sản phẩm gần đây ở footer ***
 document.addEventListener('DOMContentLoaded', () => {
   const wrap = document.getElementById('recentProducts');
-  if (!wrap) return; // nếu không có block thì thôi
+  if (!wrap) return; // nếu k có block thì thôi
 
   const DATA_URL = 'data/products.json';
 
@@ -580,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "<p style='font-size:14px;color:#b00020'>Không tải được sản phẩm gần đây.</p>";
     });
 });
-// ========== TÌM KIẾM SẢN PHẨM ========== 
+// *** tìm kiếm sản phẩm ***
 document.addEventListener('DOMContentLoaded', () => {
   const toggleBtn = document.getElementById('searchToggle');
   const panel     = document.getElementById('searchPanel');
@@ -653,7 +713,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Lọc kết quả theo text
+  // lọc kết quả theo text
   input.addEventListener('input', async () => {
     const q = input.value.trim().toLowerCase();
     if (!q) {
@@ -705,59 +765,23 @@ menu.onclick = () => {
     menu.classList.toggle('bx-x');
     navigation.classList.toggle('active');
 };
-// random 4 bài viết mới nhất
-document.addEventListener('DOMContentLoaded', function () {
-    const container = document.getElementById('latestPosts');
-    if (!container) return; // phòng khi dùng script.js ở trang khác
-
-    fetch('data/posts.json')
-        .then(function (res) {
-            if (!res.ok) throw new Error('Không load được posts.json');
-            return res.json();
-        })
-        .then(function (posts) {
-            if (!Array.isArray(posts) || posts.length === 0) return;
-
-            // shuffle mảng rồi lấy 4 phần tử đầu
-            const shuffled = posts.slice().sort(function () {
-                return Math.random() - 0.5;
-            });
-            const selected = shuffled.slice(0, 4);
-
-            container.innerHTML = selected.map(function (post) {
-                return `
-                <div class="box">
-                    <div class="box-img">
-                        <img src="${post.image}" alt="${post.title}">
-                    </div>
-                    <p>${post.dateText}</p>
-                    <h4>${post.title}</h4>
-                    
-                    <div class="box-btn">
-                        <a href="${post.url || '#'}">
-                            Đọc thêm <span><i class='bx bx-right-arrow-alt'></i></span>
-                        </a>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        })
-        .catch(function (err) {
-            console.error(err);
-            container.innerHTML =
-                "<p style='padding:1rem;color:#b00020'>Không thể tải danh sách bài viết.</p>";
-        });
-});
-// liên hệ
+// ***liên hệ (fixed: chỉ chạy khi có form thôi)
 (function () {
     const form = document.getElementById('contactForm');
+    
+    // nếu trang này k có form liên hệ thì dừng ngay, k làm gì cả (tránh lỗi)
+    if (!form) return; 
+
     const fields = ['name', 'email', 'topic', 'message'];
 
     fields.forEach(f => {
         const el = document.getElementById(f);
-        const val = localStorage.getItem('contact_' + f);
-        if (val) el.value = val;
-        el.addEventListener('input', () => localStorage.setItem('contact_' + f, el.value));
+        // kiểm tra kỹ: nếu ô nhập liệu tồn tại thì mới xử lý
+        if (el) {
+            const val = localStorage.getItem('contact_' + f);
+            if (val) el.value = val;
+            el.addEventListener('input', () => localStorage.setItem('contact_' + f, el.value));
+        }
     });
 
     form.addEventListener('submit', function (e) {
@@ -768,3 +792,205 @@ document.addEventListener('DOMContentLoaded', function () {
         fields.forEach(f => localStorage.removeItem('contact_' + f));
     });
 })();
+/**XỬ LÝ CÁC NÚT TRÊN SẢN PHẨM (GRID): GIỎ HÀNG, ẨN, KHÔI PHỤC*/
+
+document.addEventListener('click', function(e) {
+    const targetLink = e.target.closest('.hovr a');
+    if (!targetLink) return;
+
+    const isCartBtn = targetLink.querySelector('.bx-cart-alt');
+    const isHideBtn = targetLink.querySelector('.bx-low-vision');
+    const isSyncBtn = targetLink.querySelector('.bx-sync');
+
+    //**NÚT THÊM VÀO GIỎ (bảo vệ đăng nhập)
+    if (isCartBtn) {
+        const user = localStorage.getItem('currentUser');
+        if (!user) {
+            //chưa đăng nhập -> chặn ngay lập tức
+            e.preventDefault();
+            e.stopImmediatePropagation(); // ngăn cart.js chạy
+            
+            if (confirm("Bạn cần đăng nhập để mua hàng.\nĐến trang đăng nhập ngay?")) {
+                window.location.href = 'login.html';
+            }
+            return;
+        }
+        // nếu đã đăng nhập -> để yên cho cart.js tự xử lý tiếp
+    }
+
+    //**NÚT ẨN SẢN PHẨM
+    if (isHideBtn) {
+        e.preventDefault();
+        const productCard = targetLink.closest('.row');
+        if (productCard) {
+            productCard.style.transition = 'all 0.5s ease';
+            productCard.style.opacity = '0';
+            productCard.style.transform = 'scale(0.8)';
+            setTimeout(() => { productCard.style.display = 'none'; }, 500);
+        }
+    }
+
+    //**NÚT KHÔI PHỤC
+    if (isSyncBtn) {
+        e.preventDefault();
+        const icon = targetLink.querySelector('i');
+        if (icon) {
+            icon.style.transition = 'transform 0.5s ease';
+            icon.style.transform = 'rotate(360deg)';
+            setTimeout(() => icon.style.transform = 'none', 500);
+        }
+        const hiddenRows = document.querySelectorAll('.row[style*="display: none"]');
+        if (hiddenRows.length === 0) {
+            alert("Danh sách đã đầy đủ!");
+        } else {
+            hiddenRows.forEach(row => {
+                row.style.display = '';
+                setTimeout(() => {
+                    row.style.opacity = '1';
+                    row.style.transform = 'scale(1)';
+                }, 50);
+            });
+        }
+    }
+});
+/**XỬ LÝ TRANG CHI TIẾT SẢN PHẨM (product-detail.html)**/
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const proName = document.getElementById('proName');
+    
+    // nếu k có phần tử này -> k phải trang chi tiết -> dừng
+    if (!proName) return; 
+
+    //***lấy thông tin từ URL
+    const params = new URLSearchParams(window.location.search);
+    const cat = params.get('cat');
+    const id = params.get('id');
+
+    if (!cat || !id) {
+        proName.textContent = "Không tìm thấy sản phẩm!";
+        return;
+    }
+
+    try {
+        //***tải dữ liệu từ file JSON
+        const res = await fetch('data/products.json', { cache: 'no-store' });
+        const data = await res.json();
+        
+        // lấy đúng sản phẩm trong danh mục
+        const product = data[cat] ? data[cat][id] : null;
+
+        if (!product) {
+            proName.textContent = "Sản phẩm không tồn tại!";
+            return;
+        }
+
+        //***hiển thị dữ liệu lên màn hình
+        document.title = `${product.title} - Animall`;
+        
+        const imgEl = document.getElementById('MainImg');
+        if (imgEl) imgEl.src = product.img;
+        
+        const tagEl = document.getElementById('proTag');
+        if (tagEl) tagEl.textContent = `Sản phẩm / ${product.tag || 'Sản phẩm'}`;
+        
+        proName.textContent = product.title;
+        
+        const priceEl = document.getElementById('proPrice');
+        if (priceEl) priceEl.textContent = product.price;
+        
+        const oldPriceEl = document.getElementById('proOldPrice');
+        if (oldPriceEl) oldPriceEl.textContent = product.oldPrice || '';
+        
+        const rateEl = document.getElementById('proRate');
+        if (rateEl) rateEl.textContent = product.rate || '5.0';
+        
+        //***hiển thị mô tả lấy từ json
+        const descEl = document.getElementById('proDesc');
+        if (descEl) {
+            // nếu trong json có 'desc' thì dùng, k thì dùng câu mặc định
+            descEl.textContent = product.desc 
+                ? product.desc 
+                : `Sản phẩm ${product.title} là lựa chọn tuyệt vời cho thú cưng.`;
+        }
+
+        //***xử lý nút thêm vào giỏ hàngđể cập nhật số lượng chuẩn
+        const addBtn = document.getElementById('addToCartBtn');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => {
+                
+                //**kiểm tra đăng nhập
+                const user = localStorage.getItem('currentUser');
+                if (!user) {
+                    if (confirm("Bạn cần đăng nhập để mua hàng.\nĐến trang đăng nhập ngay?")) {
+                        window.location.href = 'login.html';
+                    }
+                    return; 
+                }
+
+                //**lấy số lượng từ ô input
+                const qtyInput = document.getElementById('proQty');
+                let quantity = 1;
+                if (qtyInput && qtyInput.value > 0) {
+                    quantity = parseInt(qtyInput.value);
+                }
+
+                //**thêm vào giỏ
+                if (window.addToCart) {
+                    window.addToCart({
+                        id: `prod-${cat}-${id}`,
+                        title: product.title,
+                        price: product.price,
+                        img: product.img,
+                        type: cat,
+                        quantity: quantity // truyền số lượng đã chọn
+                    });
+                    
+                    // mở giỏ hàng
+                    if (window.Cart && typeof window.Cart.open === 'function') {
+                        window.Cart.open();
+                    }
+                }
+            });
+        }
+
+    } catch (err) {
+        console.error(err);
+        proName.textContent = "Lỗi tải dữ liệu!";
+    }
+});
+// *** XỬ LÝ NÚT THANH TOÁN TRONG GIỎ HÀNG ***
+document.addEventListener('click', function(e) {
+    //**kiểm tra xem người dùng có bấm vào nút có id="cartCheckout" k
+    // dùng Event Delegation sẽ hoạt động kể cả khi nút này được sinh ra bằng JS
+    if (e.target && e.target.id === 'cartCheckout') {
+        
+        e.preventDefault(); // ngăn chặn hành vi chuyển trang mặc định ngay lập tức để kiểm tra điều kiện trước
+
+        //**kiểm tra đăng nhập
+        const user = localStorage.getItem('currentUser');
+        if (!user) {
+            if (confirm("Bạn cần đăng nhập để thanh toán.\nĐến trang đăng nhập ngay?")) {
+                window.location.href = 'login.html';
+            }
+            return; // dừng lại, k cho đi tiếp
+        }
+
+        //**kiểm tra giỏ hàng có trống k
+        // key 'cart_items_v1' phải khớp với key dùng lưu giỏ hàng trong localStorage
+        const cartKey = 'cart_items_v1'; 
+        let cart = [];
+        try {
+            cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+        } catch (err) {
+            cart = [];
+        }
+
+        if (cart.length === 0) {
+            alert("Giỏ hàng của bạn đang trống! Hãy mua thêm sản phẩm.");
+            return; // dừng lại
+        }
+
+        //**nếu đủ điều kiện -> Chuyển hướng thủ công bằng JS
+        window.location.href = 'checkout.html';
+    }
+});

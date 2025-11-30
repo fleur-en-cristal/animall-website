@@ -20,13 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if ($count) { $count.textContent = n; $count.style.display = n ? 'inline-flex' : 'none'; }
   };
 
+  //***HÀM ADD TO CART ĐÃ SỬA***
   const addToCart = (item) => {
     const items = loadCart();
     const idx = items.findIndex(x => x.id === item.id);
-    if (idx >= 0) items[idx].qty += 1; else items.push({ ...item, qty: 1 });
+    
+    //nếu item có truyền quantity từ trang chi tiết thì lấy, k thì mặc định là 1 từ trang chủ
+    const quantityToAdd = item.quantity || 1; 
+
+    if (idx >= 0) {
+      items[idx].qty += quantityToAdd; 
+    } else {
+      items.push({ ...item, qty: quantityToAdd }); 
+    }
     saveCart(items);
   };
-
+ 
   const renderCart = () => {
     if (!$items || !$total) return; // trang nào chưa có drawer thì bỏ qua
     const items = loadCart();
@@ -55,18 +64,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const openCart  = () => { renderCart(); if ($drawer) { $drawer.classList.add('open'); $drawer.setAttribute('aria-hidden','false'); } };
   const closeCart = () => { if ($drawer) { $drawer.classList.remove('open'); $drawer.setAttribute('aria-hidden','true'); } };
 
-  // Delegation: bấm icon giỏ trong bất kỳ card nào (.bx-cart-alt)
+  // delegation: bấm icon giỏ trong bất kỳ card nào (.bx-cart-alt)
   document.body.addEventListener('click', (e) => {
     const icon = e.target.closest('.bx-cart-alt');
     if (icon) {
       e.preventDefault();
+      
+      // kiểm tra đăng nhập trước để đồng bộ logic giỏ
+      const user = localStorage.getItem('currentUser');
+      if (!user) {
+          if (confirm("Bạn cần đăng nhập để mua hàng.\nĐến trang đăng nhập ngay?")) {
+              window.location.href = 'login.html';
+          }
+          return;
+      }
+
       const card = icon.closest('.row');
       if (!card) return;
-      const id    = card.dataset.id || (card.querySelector('img')?.src + '|' + (card.querySelector('.btm-text h5')?.textContent.trim() || ''));
-      const title = card.dataset.title || card.querySelector('.btm-text h5')?.textContent.trim() || 'Sản phẩm';
-      const price = card.dataset.price || (card.querySelector('.price h6')?.childNodes[0]?.textContent.trim() || '0 VND');
-      const img   = card.dataset.img   || card.querySelector('img')?.getAttribute('src') || '';
-      addToCart({ id, title, price, img });
+
+      //***lấy ID chuẩn từ data-id của thẻ .row thay vì từ id của thẻ***
+      //nếu k có data-id thì mới dùng id của thẻ
+      const id = card.dataset.id || card.id;
+
+      //***lấy các thông tin khác
+      const title = card.querySelector('h5')?.textContent.trim() || 'Sản phẩm';
+      
+      // xử lý giá tiền, lấy con số đầu tiên trong thẻ h6
+      const priceText = card.querySelector('.price h6')?.childNodes[0]?.textContent.trim(); 
+      const price = priceText || '0 VND';
+      
+      const img = card.querySelector('img')?.getAttribute('src') || '';
+      
+      //***lấy loại sản phẩm (cat) để hiển thị trong giỏ cho đẹp
+      const type = card.dataset.cat || 'Sản phẩm';
+
+      //***thêm vào giỏ (Mặc định số lượng là 1)
+      addToCart({ 
+          id: id,       // ID này giờ đã giống hệt trang chi tiết, như là prod-dog-2
+          title: title, 
+          price: price, 
+          img: img,
+          type: type,
+          quantity: 1 
+      });
+      
+      // mở giỏ hàng báo hiệu
+      openCart();
       return;
     }
 

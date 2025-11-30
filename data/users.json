@@ -2,13 +2,13 @@
   {
     "id": 1,
     "name": "Phung Phung",
-    "email": "phung@example.com",
+    "email": "phung@animall.com",
     "password": "123456"
   },
   {
     "id": 2,
     "name": "Admin",
-    "email": "admin@example.com",
-    "password": "admin123"
+    "email": "admin@animall.com",
+    "password": "123456"
   }
 ]

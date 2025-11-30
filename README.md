@@ -91,3 +91,33 @@ animall-website/
 └── image/
     ├── ...             # Toàn bộ hình ảnh giao diện, sản phẩm, logo
 
+## 6. Giao diện Demo:
+
+A. Trang Chủ:
+![Giao diện dự án](image/demo-layout.png)
+
+B. Sản phẩm ngoài trang chủ:
+![Giao diện dự án](image/demo-product.png)
+
+C. Đăng ký/đăng nhập:
+![Giao diện dự án](image/demo-login.png)
+
+![Giao diện dự án](image/demo-register.png)
+
+D. Tất cả các sản phẩm:
+![Giao diện dự án](image/demo-allproducts.png)
+
+E. Chi tiết sản phẩm:
+![Giao diện dự án](image/demo-product-detail.png)
+
+F. Tất cả các bài viết:
+![Giao diện dự án](image/demo-allpost.png)
+
+G. Chi tiết bài viết:
+![Giao diện dự án](image/demo-post-detail.png)
+
+H. Thanh toán:
+![Giao diện dự án](image/demo-payment.png)
+
+I. Đặt hàng thành công:
+![Giao diện dự án](image/demo-order-placed.png)

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm - Animall</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- header, search, cart dùng chung -->
+    <script src="partials/header.js"></script>
+
+    <section class="pro-details page-section">
+        <div class="single-pro-image">
+            <img src="" width="100%" id="MainImg" alt="Hình sản phẩm">
+        </div>
+
+        <div class="single-pro-details">
+            <h6 id="proTag">
+
+            </h6>
+            <h4 id="proName">Đang tải dữ liệu...</h4>
+            
+            <div class="pro-price">
+                <h2 id="proPrice">
+
+                </h2>
+                <span id="proOldPrice">
+
+                </span>
+            </div>
+
+            <div class="pro-rate">
+                <i class='bx bxs-star'></i><span id="proRate">5.0</span>
+            </div>
+            <label for="proQty">Số lượng:</label>
+            <input type="number" id="proQty" value="1" min="1">
+            <button class="btn normal" id="addToCartBtn">Thêm Vào Giỏ Hàng</button>
+
+            <h4>Mô tả sản phẩm</h4>
+            <span id="proDesc">
+                
+            </span>
+        </div>
+    </section>
+
+    <!-- section liên hệ dùng chung-->
+    <script src="partials/contact.js"></script>
+    <!-- footer dùng chung -->
+    <script src="partials/footer.js"></script>
+    <!-- javascript link -->
+    <script src="js/script.js"></script>
+    <!-- giỏ hàng -->
+    <script src="js/cart.js"></script>
+
+</body>
+</html>
