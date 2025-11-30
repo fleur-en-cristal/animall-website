@@ -23,6 +23,9 @@ Dự án xây dựng một website bán hàng dành cho thú cưng, cho phép ng
 > **Link demo GitHub Pages (sau khi bật Pages):**  
 > `https://fleur-en-cristal.github.io/animall-website/`
 
+> **Link Website Animall Wireframe:**  
+> `https://www.figma.com/design/phESc1ncuP1XyQ6Anz7qT6/Website-Animall-Wireframe?node-id=196-46&m=dev&t=xaEoVnjxl45B7J8h-1`
+
 
 
 ## 3. Thành viên nhóm:
