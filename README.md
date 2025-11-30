@@ -1,4 +1,4 @@
-# Animall – Website Bán Đồ & Dịch Vụ Thú Cưng
+# Animall – Website Dịch Vụ & Sản Phẩm Thú Cưng
 
 
 ## 1. Tên dự án:
