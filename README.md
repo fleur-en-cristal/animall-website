@@ -100,32 +100,40 @@ animall-website/
 ```
 ## 6. Giao diện Demo:
 
-## 6. Giao diện Demo:
-
 **A. Trang Chủ:**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-home.png)
 
 **B. Sản phẩm (Ngoài trang chủ):**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-product.png)
 
 **C. Đăng ký / Đăng nhập:**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-login.png)
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-register.png)
 
 **D. Tất cả sản phẩm (Trang danh mục):**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-allproducts.png)
 
 **E. Chi tiết sản phẩm:**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-product-detail.png)
 
 **F. Tin tức / Bài viết:**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-allpost.png)
 
 **G. Chi tiết bài viết:**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-post-detail.png)
 
 **H. Giỏ hàng & Thanh toán:**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-payment.png)
 
 **I. Đặt hàng thành công:**
+
 ![Giao diện dự án](https://raw.githubusercontent.com/fleur-en-cristal/animall-website/main/image/demo-order-placed.png)
