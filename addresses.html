@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Địa chỉ nhận hàng - Animall</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <script src="partials/header.js"></script>
+
+  <section class="page-section">
+    <h1>Địa chỉ nhận hàng</h1>
+    <p class="note">Trang mô phỏng. Bạn có thể lưu địa chỉ để checkout tự điền.</p>
+
+    <div class="card" style="padding:16px; margin-top:16px;">
+      <form id="addrForm" class="form">
+        <label for="addr">Địa chỉ</label>
+        <input id="addr" placeholder="Số nhà, tên đường, phường/xã" required />
+        <button class="btn-primary" type="submit" style="margin-top:12px;">Lưu</button>
+        <p id="addrMsg" style="margin-top:10px; display:none;"></p>
+      </form>
+    </div>
+  </section>
+
+  <script src="partials/contact.js"></script>
+  <script src="partials/footer.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/cart.js"></script>
+
+  <script>
+    (function(){
+      const KEY='shippingAddress_v1';
+      const form=document.getElementById('addrForm');
+      const input=document.getElementById('addr');
+      const msg=document.getElementById('addrMsg');
+      if(!form||!input||!msg) return;
+      const saved=localStorage.getItem(KEY);
+      if(saved) input.value=saved;
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        localStorage.setItem(KEY, input.value.trim());
+        msg.style.display='block';
+        msg.style.color='#0a7f2e';
+        msg.textContent='Đã lưu địa chỉ (cục bộ).';
+      });
+    })();
+  </script>
+</body>
+
+</html>

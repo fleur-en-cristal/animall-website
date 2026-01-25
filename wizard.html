@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chưa biết chọn gì? - Wizard 3 bước</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body>
+  <script src="partials/header.js"></script>
+
+  <section class="page-section">
+    <h1>Chưa biết chọn gì? (Wizard 3 bước)</h1>
+    <p class="note">Loài → tuổi/cân nặng → nhu cầu. Kết quả sẽ đưa bạn đến trang sản phẩm phù hợp.</p>
+
+    <div class="card" style="padding:16px; margin-top:16px;">
+      <form id="wizardForm" class="form">
+        <div class="grid-two">
+          <div>
+            <label for="wSpecies">Bước 1: Loài</label>
+            <select id="wSpecies" required>
+              <option value="dog">Chó</option>
+              <option value="cat">Mèo</option>
+              <option value="bird">Chim</option>
+              <option value="rabbit">Thỏ</option>
+              <option value="hamster">Thú nhỏ</option>
+            </select>
+          </div>
+          <div>
+            <label for="wStage">Bước 2: Giai đoạn</label>
+            <select id="wStage" required>
+              <option value="puppy">Nhỏ Tuổi</option>
+              <option value="adult">Trưởng thành</option>
+              <option value="senior">Cao Tuổi</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="wNeed">Bước 3: Nhu cầu</label>
+        <select id="wNeed" required>
+          <option value="food">Thức ăn</option>
+          <option value="health">Sức khỏe</option>
+          <option value="hygiene">Vệ sinh</option>
+          <option value="accessory">Phụ kiện</option>
+          <option value="toy">Đồ chơi & huấn luyện</option>
+          <option value="newbie">Dành cho người mới</option>
+        </select>
+
+        <div class="actions" style="margin-top:12px;">
+          <a class="btn-outline" href="pet-profile.html">Lưu vào Pet Profile</a>
+          <button class="btn-primary" type="submit">Xem gợi ý sản phẩm</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <script src="partials/contact.js"></script>
+  <script src="partials/footer.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/cart.js"></script>
+
+  <script>
+    (function () {
+      const form = document.getElementById('wizardForm');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const species = document.getElementById('wSpecies').value;
+        const stage = document.getElementById('wStage').value;
+        const need = document.getElementById('wNeed').value;
+
+        const params = new URLSearchParams();
+        params.set('cat', species);
+        params.set('need', need);
+        params.set('stage', stage);
+
+        window.location.href = 'products.html?' + params.toString();
+      });
+    })();
+  </script>
+</body>
+
+</html>

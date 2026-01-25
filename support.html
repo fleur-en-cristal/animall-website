@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đơn hàng - Animall</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="support-page">
+  <script src="partials/header.js"></script>
+
+  <section class="page-section">
+    <h1>Đơn hàng</h1>
+
+    <div class="grid-two support-top-grid" style="margin-top:16px;">
+      <div class="card" style="padding:16px;">
+        <h3>Tra cứu đơn hàng</h3>
+        <form id="lookupForm" class="form" style="margin-top:10px;">
+          <label for="orderCode">Mã đơn</label>
+          <input id="orderCode" placeholder="VD: ANM123456" required />
+          <button type="submit" class="btn-primary" style="margin-top:12px;">Tra cứu</button>
+          <p id="lookupMsg" style="margin-top:10px; display:none;"></p>
+        </form>
+
+        <div id="orderResult" class="order-result" style="display:none;"></div>
+      </div>
+
+      <div class="support-right-stack">
+        <div class="card" style="padding:16px;">
+          <h3>Sản phẩm trong đơn</h3>
+          <div id="orderItems" class="order-items">
+            <div class="note">Nhập mã đơn để xem danh sách sản phẩm (mô phỏng).</div>
+          </div>
+        </div>
+        <div class="card support-policies" id="policies" style="padding:16px;">
+          <h3>Chính sách &amp; hướng dẫn</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+            <a class="btn-outline" href="checkout.html">Hướng dẫn thanh toán</a>
+            <a class="btn-outline" href="post-detail.html?id=chinh-sach-doi-tra">Chính sách giao hàng / đổi trả</a>
+            <a class="btn-outline" href="posts.html">FAQ / Cẩm nang</a>
+            <a class="btn" href="contact.html">Gửi liên hệ</a>
+            <a class="btn-outline" href="services.html#booking">Xem dịch vụ</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+
+  <script src="partials/contact.js"></script>
+  <script src="partials/footer.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/cart.js"></script>
+
+  <script>
+    (function () {
+      const form = document.getElementById('lookupForm');
+      const msg = document.getElementById('lookupMsg');
+      const result = document.getElementById('orderResult');
+      const itemsBox = document.getElementById('orderItems');
+      if (!form || !msg) return;
+
+      const money = (s) => String(s || '').trim();
+      let products = null;
+
+      // Optional: use product data to render purchased items
+      fetch('data/products.json', { cache: 'no-store' })
+        .then(r => (r.ok ? r.json() : Promise.reject(new Error('Không tải được products.json'))))
+        .then((data) => { products = data; })
+        .catch(() => { products = null; });
+
+      const pad2 = (n) => String(n).padStart(2, '0');
+      const fmtDateTime = (d) => {
+        try {
+          return d.toLocaleString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+        } catch {
+          return `${pad2(d.getDate())}/${pad2(d.getMonth() + 1)}/${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+        }
+      };
+
+      const hashCode = (s) => {
+        let h = 7;
+        for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+        return h >>> 0;
+      };
+
+      const safeKeys = (obj) => {
+        try {
+          const keys = Object.keys(obj || {});
+          return keys.filter(k => Array.isArray(obj[k]) && obj[k].length);
+        } catch {
+          return [];
+        }
+      };
+
+      const pickItems = (orderCode) => {
+        const h = hashCode(orderCode);
+        const fallback = [
+          { img: 'image/pr-1.jpg', title: 'Đai Yếm Cao Cấp', price: '650.000 VND', qty: 1 },
+          { img: 'image/pr-4.jpg', title: 'Xương Gặm Nhân Tạo', price: '50.000 VND', qty: 2 },
+          { img: 'image/pr-6.jpg', title: 'Bóng Gai Massage', price: '120.000 VND', qty: 1 },
+        ];
+
+        const keys = products ? safeKeys(products) : [];
+        if (!products || !keys.length) return fallback;
+
+        const cat = keys[h % keys.length];
+        const list = Array.isArray(products[cat]) ? products[cat] : [];
+        if (!list.length) return fallback;
+
+        const count = 3 + (h % 2); // 3-4 items
+        const picked = [];
+        for (let i = 0; i < count; i++) {
+          const idx = (h + i * 17) % list.length;
+          const it = list[idx];
+          picked.push({
+            img: it.img,
+            title: it.title,
+            price: it.price,
+            qty: 1 + ((h + i) % 3),
+          });
+        }
+        return picked;
+      };
+
+      const renderOrderItems = (orderCodeRaw) => {
+        const orderCode = String(orderCodeRaw || '').trim().toUpperCase();
+        const items = pickItems(orderCode);
+
+        const rows = items.map((it) => `
+          <div class="order-item">
+            <img class="order-item__img" src="${it.img}" alt="${it.title}" loading="lazy" />
+            <div class="order-item__body">
+              <div class="order-item__title">${it.title}</div>
+              <div class="order-item__meta">SL: ${it.qty}</div>
+            </div>
+            <div class="order-item__price">${money(it.price)}</div>
+          </div>
+        `).join('');
+
+        return `
+          <div class="order-items__hint">Danh sách sản phẩm (mô phỏng) theo mã <strong>${orderCode}</strong></div>
+          <div class="order-items__list">${rows}</div>
+        `;
+      };
+
+      const renderTracking = (orderCodeRaw) => {
+        const orderCode = String(orderCodeRaw || '').trim().toUpperCase();
+        const h = hashCode(orderCode);
+        const stage = h % 4; // 0..3
+
+        // pseudo-random (deterministic) map point around HCMC
+        const r1 = ((h >>> 0) % 10000) / 10000;
+        const r2 = (((h >>> 12) >>> 0) % 10000) / 10000;
+        const lat = 10.75 + (r1 - 0.5) * 0.25;
+        const lon = 106.67 + (r2 - 0.5) * 0.30;
+        const delta = 0.03;
+        const bbox = `${(lon - delta).toFixed(6)},${(lat - delta).toFixed(6)},${(lon + delta).toFixed(6)},${(lat + delta).toFixed(6)}`;
+        const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${encodeURIComponent(bbox)}&layer=mapnik&marker=${lat.toFixed(6)}%2C${lon.toFixed(6)}`;
+        const mapLink = `https://www.openstreetmap.org/?mlat=${lat.toFixed(6)}&mlon=${lon.toFixed(6)}#map=14/${lat.toFixed(6)}/${lon.toFixed(6)}`;
+
+        const now = new Date();
+        const createdAt = new Date(now.getTime() - (24 * 60 * 60 * 1000) * (stage + 1));
+        const updatedAt = new Date(now.getTime() - (60 * 60 * 1000) * ((h % 10) + 1));
+
+        const steps = [
+          { key: 'confirmed', label: 'Đã xác nhận', desc: 'Cửa hàng đã tiếp nhận đơn.' },
+          { key: 'packing', label: 'Đang chuẩn bị', desc: 'Đóng gói và bàn giao đơn vị vận chuyển.' },
+          { key: 'shipping', label: 'Đang giao', desc: 'Đơn đang được vận chuyển đến bạn.' },
+          { key: 'delivered', label: 'Đã giao', desc: 'Đơn đã giao thành công.' },
+        ];
+
+        const hubs = [
+          'Kho Animall - TP.HCM',
+          'Trung tâm phân loại Thủ Đức',
+          'Bưu cục Quận 1',
+          'Bưu cục Quận 7',
+          'Trạm giao hàng Bình Thạnh',
+        ];
+        const hubA = hubs[h % hubs.length];
+        const hubB = hubs[(h + 2) % hubs.length];
+
+        const statusText = steps[stage].label;
+        const statusKey = steps[stage].key;
+        const location = stage === 0
+          ? 'Cửa hàng Animall (đã nhận đơn)'
+          : stage === 1
+            ? hubA
+            : stage === 2
+              ? `Đang di chuyển: ${hubA} → ${hubB}`
+              : 'Đã giao đến địa chỉ nhận hàng';
+
+        const etaDays = stage === 3 ? -1 : (3 - stage);
+        const eta = new Date(now.getTime() + (24 * 60 * 60 * 1000) * etaDays);
+
+        const stepsHtml = steps.map((s, idx) => {
+          const cls = idx < stage ? 'is-done' : idx === stage ? 'is-active' : 'is-todo';
+          return `
+            <div class="order-step ${cls}">
+              <div class="order-step__dot"></div>
+              <div class="order-step__body">
+                <div class="order-step__label">${s.label}</div>
+                <div class="order-step__desc">${s.desc}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const etaText = stage === 3
+          ? `Đã giao lúc ${fmtDateTime(updatedAt)}`
+          : `Dự kiến giao ${fmtDateTime(eta)}`;
+
+        return `
+          <div class="order-result__head">
+            <div class="order-result__code">Mã đơn: <strong>${orderCode}</strong></div>
+            <span class="order-pill order-pill--${statusKey}">${statusText}</span>
+          </div>
+          <div class="order-result__meta">
+            <div><span class="order-k">Tạo lúc:</span> ${fmtDateTime(createdAt)}</div>
+            <div><span class="order-k">Cập nhật:</span> ${fmtDateTime(updatedAt)}</div>
+            <div><span class="order-k">Vị trí hiện tại:</span> ${location}</div>
+            <div><span class="order-k">Trạng thái:</span> ${etaText}</div>
+          </div>
+          <div class="order-map">
+            <div class="order-map__frame">
+              <iframe
+                title="Bản đồ (mô phỏng)"
+                src="${mapSrc}"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <a class="btn-outline order-map__link" href="${mapLink}" target="_blank" rel="noreferrer">Mở bản đồ lớn</a>
+          </div>
+          <div class="order-steps">${stepsHtml}</div>
+        `;
+      };
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const code = document.getElementById('orderCode')?.value || '';
+        const clean = String(code).trim();
+        if (!clean) return;
+
+        msg.style.display = 'none';
+
+        if (result) {
+          result.innerHTML = renderTracking(clean);
+          result.style.display = 'block';
+        } else {
+          msg.style.display = 'block';
+          msg.style.color = '#5E626F';
+          msg.textContent = 'Chức năng tra cứu đơn hàng đang ở chế độ mô phỏng.';
+        }
+
+        if (itemsBox) {
+          itemsBox.innerHTML = renderOrderItems(clean);
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>

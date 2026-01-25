@@ -13,13 +13,130 @@ document.write(`
       </a>
 
       <!-- Thanh điều hướng chính -->
-      <ul class="navigation">
-          <li><a href="index.html">Trang chủ</a></li>
-          <li><a href="index.html#services">Dịch vụ</a></li>
-          <li><a href="index.html#food">Sản phẩm</a></li>
-          <li><a href="index.html#review">Về chúng tôi</a></li>
-          <li><a href="index.html#post">Bài viết</a></li>
-      </ul>
+    <ul class="navigation" aria-label="Điều hướng chính">
+      <li><a href="index.html">Trang chủ</a></li>
+
+      <li class="nav-has-mega" data-mega>
+        <a href="products.html" class="nav-mega-trigger" aria-haspopup="true" aria-expanded="false">Sản phẩm</a>
+
+        <!-- Mega menu: ưu tiên Learnability (Theo Loài | Theo Nhu cầu) -->
+        <div class="mega-menu" role="menu" aria-label="Sản phẩm">
+          <div class="mega-head">
+            <div class="mega-tabs" role="tablist" aria-label="Cách duyệt sản phẩm">
+              <button class="mega-tab is-active" type="button" role="tab" data-mega-tab="species" aria-selected="true">Theo Loài</button>
+              <button class="mega-tab" type="button" role="tab" data-mega-tab="needs" aria-selected="false">Theo Nhu cầu</button>
+            </div>
+            <div class="mega-quick">
+              <a class="mega-quick-link" href="post-detail.html?id=huong-dan-chon-size-cho-cho-meo-tho-chim-hamster">Hướng dẫn chọn size</a>
+              <a class="mega-quick-link" href="products.html?sort=best">Top bán chạy</a>
+              <a class="mega-quick-link" href="products.html?sort=new">Hàng mới</a>
+              <a class="mega-quick-link" href="products.html?sort=sale">Giảm giá</a>
+            </div>
+          </div>
+
+          <!-- Panel: Theo Loài -->
+          <div class="mega-panel is-active" data-mega-panel="species" role="tabpanel">
+            <div class="mega-grid">
+              <div class="mega-col">
+                <h4>Chó</h4>
+                <a href="products.html?cat=dog&need=food">Thức ăn</a>
+                <a href="products.html?cat=dog&need=health">Sức khỏe</a>
+                <a href="products.html?cat=dog&need=hygiene">Vệ sinh</a>
+                <a href="products.html?cat=dog&need=accessory">Phụ kiện</a>
+                <a href="products.html?cat=dog&need=toy">Đồ chơi & huấn luyện</a>
+                <a href="products.html?cat=dog&need=newbie">Dành cho người mới</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Mèo</h4>
+                <a href="products.html?cat=cat&need=food">Thức ăn</a>
+                <a href="products.html?cat=cat&need=health">Sức khỏe</a>
+                <a href="products.html?cat=cat&need=hygiene">Vệ sinh</a>
+                <a href="products.html?cat=cat&need=accessory">Phụ kiện</a>
+                <a href="products.html?cat=cat&need=toy">Đồ chơi</a>
+                <a href="products.html?cat=cat&need=newbie">Dành cho người mới</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Chim</h4>
+                <a href="products.html?cat=bird&need=food">Thức ăn</a>
+                <a href="products.html?cat=bird&need=accessory">Lồng & phụ kiện</a>
+                <a href="products.html?cat=bird&need=hygiene">Sức khỏe & vệ sinh</a>
+                <a href="products.html?cat=bird&need=newbie">Dành cho người mới: setup lồng</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Thú nhỏ</h4>
+                <a href="products.html?cat=hamster&need=food">Thức ăn</a>
+                <a href="products.html?cat=hamster&need=accessory">Lồng & lót chuồng</a>
+                <a href="products.html?cat=hamster&need=health">Sức khỏe</a>
+                <a href="products.html?cat=hamster&need=newbie">Bộ nuôi thú nhỏ</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Khác</h4>
+                <a href="products.html?cat=fish">Cá: set up hồ 7 ngày</a>
+                <a href="products.html?cat=reptile">Bò sát: set up cơ bản</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel: Theo Nhu cầu -->
+          <div class="mega-panel" data-mega-panel="needs" role="tabpanel">
+            <div class="mega-grid">
+              <div class="mega-col">
+                <h4>Thức ăn</h4>
+                <a href="products.html?need=food&species=dog">Theo Loài: Chó</a>
+                <a href="products.html?need=food&species=cat">Theo Loài: Mèo</a>
+                <a href="products.html?need=food&species=bird">Theo Loài: Chim</a>
+                <a href="products.html?need=food&species=hamster">Theo Loài: Thú nhỏ</a>
+                <a href="products.html?need=food&stage=puppy">Theo giai đoạn: Nhỏ tuổi</a>
+                <a href="products.html?need=food&stage=adult">Theo giai đoạn: Trưởng thành</a>
+                <a href="products.html?need=food&stage=senior">Theo giai đoạn: Cao tuổi</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Sức khỏe</h4>
+                <a href="products.html?need=health&topic=supplement">Dinh dưỡng bổ sung</a>
+                <a href="products.html?need=health&topic=skin">Da & lông</a>
+                <a href="products.html?need=health&topic=digest">Tiêu hóa</a>
+                <a href="products.html?need=health&topic=parasite">Ký sinh trùng</a>
+                <a href="products.html?need=health&topic=basic-care">Vật tư chăm sóc</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Vệ sinh</h4>
+                <a href="products.html?need=hygiene&topic=bath">Tắm & chăm sóc</a>
+                <a href="products.html?need=hygiene&topic=odor">Khử mùi</a>
+                <a href="products.html?need=hygiene&topic=oral">Vệ sinh răng–tai</a>
+                <a href="products.html?need=hygiene&topic=litter">Cát vệ sinh / tã / túi nhặt phân</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Phụ kiện</h4>
+                <a href="products.html?need=accessory&topic=feeding">Ăn uống</a>
+                <a href="products.html?need=accessory&topic=outdoor">Ra ngoài</a>
+                <a href="products.html?need=accessory&topic=sleep">Ngủ nghỉ</a>
+                <a href="products.html?need=accessory&topic=wear">Mặc & bảo hộ</a>
+              </div>
+
+              <div class="mega-col">
+                <h4>Đồ chơi & định kỳ</h4>
+                <a href="products.html?need=toy">Đồ chơi & huấn luyện</a>
+                <a href="products.html?need=combo">Combo & định kỳ</a>
+                <a href="products.html?need=reorder">Gợi ý mua định kỳ / Mua lại</a>
+                <a href="pet-profile.html">Pet Profile</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li><a href="services.html">Dịch vụ</a></li>
+      <li><a href="posts.html">Kiến thức</a></li>
+      <li><a href="promotions.html">Khuyến mãi</a></li>
+      <li><a href="support.html">Đơn hàng</a></li>
+    </ul>
 
       <!-- Khu vực nút đăng nhập / đăng ký + icon -->
       <div class="head-btn">

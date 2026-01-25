@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet Profile - Animall</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+
+</head>
+
+<body>
+  <script src="partials/header.js"></script>
+
+  <section class="page-section pp" id="petProfileApp">
+    <div class="pp-topbar">
+      <div>
+        <h1 style="margin:0;">Pet Profile</h1>
+      </div>
+
+      <div class="pp-actions">
+        <label class="sr-only" for="ppPetSelect">Chọn thú cưng</label>
+        <select id="ppPetSelect" class="pp-select" aria-label="Chọn thú cưng"></select>
+        <button id="ppAddPet" class="btn-outline" type="button">+ Thêm thú cưng</button>
+      </div>
+    </div>
+
+    <div id="ppToast" class="pp-toast" role="status" aria-live="polite" style="display:none;"></div>
+
+    <!-- Screen A: Home (no profile) -->
+    <section class="pp-screen" data-screen="home" aria-label="Giới thiệu Pet Profile">
+      <div class="pp-hero">
+        <div class="pp-hero__text">
+          <h2>Gợi ý đúng cho bé, nhanh hơn mỗi lần mua</h2>
+          <p class="note">Bạn có thể tạo nhiều hồ sơ (nhiều bé) và bật/tắt cá nhân hóa bất kỳ lúc nào.</p>
+
+          <div class="pp-hero__cta">
+            <button id="ppStart" class="btn-primary" type="button">Tạo hồ sơ thú cưng</button>
+            <a class="btn-outline" href="products.html">Xem sản phẩm trước</a>
+          </div>
+
+          <div class="pp-benefits">
+            <div class="pp-benefit card">
+              <h4>Gợi ý theo nhu cầu</h4>
+              <p>Thức ăn, sức khỏe, vệ sinh, phụ kiện, đồ chơi…</p>
+            </div>
+            <div class="pp-benefit card">
+              <h4>Nhắc size phụ kiện</h4>
+              <p>Gợi ý size “ước lượng” khi bạn chưa chắc số đo.</p>
+            </div>
+            <div class="pp-benefit card">
+              <h4>Giải thích minh bạch</h4>
+              <p>Luôn có “Vì sao gợi ý?” và bạn có thể tắt cá nhân hóa.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pp-hero__aside card">
+          <h3>Ví dụ gợi ý</h3>
+          <ul class="pp-list">
+            <li>“Mochi (Mèo, trưởng thành)” → Gợi ý thức ăn & vệ sinh</li>
+            <li>Thiếu cân nặng → Gợi ý bổ sung để chọn size chính xác</li>
+            <li>Tiêu hóa nhạy cảm → Ưu tiên từ khóa liên quan</li>
+          </ul>
+          <p class="note" style="margin-top:10px;">Lưu cục bộ trên trình duyệt (localStorage).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen B: Onboarding stepper -->
+    <section class="pp-screen" data-screen="onboarding" aria-label="Tạo hồ sơ" style="display:none;">
+      <div class="pp-stepper">
+        <div class="pp-stepper__head">
+          <h2 style="margin:0;">Tạo hồ sơ</h2>
+          <div class="pp-stepper__steps" aria-label="Các bước">
+            <span class="pp-step" data-step-pill="1">1</span>
+            <span class="pp-step" data-step-pill="2">2</span>
+            <span class="pp-step" data-step-pill="3">3</span>
+          </div>
+        </div>
+
+        <form id="ppForm" class="pp-form" novalidate>
+          <!-- Step 1 -->
+          <div class="pp-step-panel" data-step="1">
+            <div class="grid-two">
+              <div>
+                <label for="ppName">Tên bé</label>
+                <input id="ppName" placeholder="Ví dụ: Mochi" maxlength="30" required />
+                <p class="pp-help">Bắt buộc để cá nhân hóa.</p>
+              </div>
+              <div>
+                <label for="ppSpecies">Loài</label>
+                <select id="ppSpecies" required>
+                  <option value="">— Chọn loài —</option>
+                  <option value="dog">Chó</option>
+                  <option value="cat">Mèo</option>
+                  <option value="bird">Chim</option>
+                  <option value="rabbit">Thỏ</option>
+                  <option value="hamster">Thú nhỏ</option>
+                </select>
+                <p class="pp-help">Nếu chưa chắc, chọn “Thú nhỏ” (có thể chỉnh lại sau).</p>
+              </div>
+            </div>
+
+            <div class="pp-avatar-field" style="margin-top:12px;">
+              <div class="pp-avatar-preview" aria-label="Ảnh thú cưng">
+                <img id="ppAvatarPreview" src="image/cate-1.jpg" alt="Ảnh thú cưng" />
+              </div>
+              <div class="pp-avatar-input">
+                <label for="ppAvatar">Ảnh thú cưng</label>
+                <input id="ppAvatar" type="file" accept="image/*" />
+                <p class="pp-help">Tải ảnh lên để hiển thị ngay trong hồ sơ.</p>
+              </div>
+            </div>
+
+            <div class="grid-two" style="margin-top:12px;">
+              <div>
+                <label for="ppStage">Giai đoạn</label>
+                <select id="ppStage" required>
+                  <option value="puppy">Con</option>
+                  <option value="adult" selected>Trưởng thành</option>
+                  <option value="senior">Già</option>
+                </select>
+              </div>
+              <div>
+                <label for="ppSex">Giới tính</label>
+                <select id="ppSex">
+                  <option value="unknown" selected>Không rõ</option>
+                  <option value="male">Đực</option>
+                  <option value="female">Cái</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="pp-step-panel" data-step="2" style="display:none;">
+            <div class="grid-two">
+              <div>
+                <label for="ppWeight">Cân nặng (kg)</label>
+                <input id="ppWeight" type="number" min="0" step="0.1" placeholder="Ví dụ: 4.5" />
+                <div class="pp-chiprow" style="margin-top:8px;">
+                  <button class="pp-chip" type="button" data-weight="">Không chắc</button>
+                  <button class="pp-chip" type="button" data-weight="2">~2kg</button>
+                  <button class="pp-chip" type="button" data-weight="5">~5kg</button>
+                  <button class="pp-chip" type="button" data-weight="10">~10kg</button>
+                </div>
+                <p class="pp-help">Dùng để gợi ý size phụ kiện & một số sản phẩm.</p>
+              </div>
+              <div>
+                <label for="ppBreed">Giống (tùy chọn)</label>
+                <input id="ppBreed" placeholder="Ví dụ: Poodle / British Shorthair" maxlength="40" />
+                <p class="pp-help">Nếu bạn không chắc, có thể để trống.</p>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <label for="ppNote">Nhu cầu/ghi chú đặc biệt</label>
+              <input id="ppNote" placeholder="Ví dụ: tiêu hóa nhạy cảm / rụng lông nhiều" maxlength="80" />
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="pp-step-panel" data-step="3" style="display:none;">
+            <div class="card pp-subcard">
+              <h3>Sức khỏe & ưu tiên</h3>
+              <div class="pp-checkgrid">
+                <label class="pp-check"><input type="checkbox" id="ppHdigest" /> Tiêu hóa nhạy cảm</label>
+                <label class="pp-check"><input type="checkbox" id="ppHskin" /> Da & lông</label>
+                <label class="pp-check"><input type="checkbox" id="ppHurinary" /> Tiết niệu</label>
+                <label class="pp-check"><input type="checkbox" id="ppHoverweight" /> Kiểm soát cân nặng</label>
+              </div>
+              <p class="note" style="margin-top:8px;">Bạn có thể tắt cá nhân hóa sau này; dữ liệu chỉ lưu trên thiết bị này.</p>
+            </div>
+          </div>
+
+          <div class="pp-nav">
+            <button id="ppBack" type="button" class="btn-outline">Quay lại</button>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <button id="ppCancel" type="button" class="btn-outline">Hủy</button>
+              <button id="ppNext" type="button" class="btn-primary">Tiếp tục</button>
+            </div>
+          </div>
+
+          <p id="ppError" class="pp-error" style="display:none;"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Screen C: Confirm + privacy -->
+    <section class="pp-screen" data-screen="confirm" aria-label="Xác nhận" style="display:none;">
+      <div class="card pp-confirm">
+        <h2>Xác nhận hồ sơ</h2>
+        <div id="ppSummary" class="pp-summary"></div>
+
+        <div class="pp-toggle">
+          <label class="pp-check"><input type="checkbox" id="ppPersonalize" checked /> Bật cá nhân hóa theo hồ sơ (PLP/PDP)</label>
+          <p class="pp-help">Nếu tắt, trang sản phẩm sẽ không hiển thị gợi ý theo bé.</p>
+        </div>
+
+        <div class="pp-nav" style="margin-top:10px;">
+          <button id="ppEdit" type="button" class="btn-outline">Chỉnh sửa</button>
+          <button id="ppSave" type="button" class="btn-primary">Lưu & mở Dashboard</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen D: Dashboard -->
+    <section class="pp-screen" data-screen="dashboard" aria-label="Dashboard" style="display:none;">
+      <div class="pp-dashboard">
+        <div class="pp-card card">
+          <div class="pp-card__head">
+            <div class="pp-card__title">
+              <h2 id="ppDashName" style="margin:0;">—</h2>
+              <span id="ppDashMeta" class="pp-meta">—</span>
+            </div>
+            <div class="pp-avatar" aria-label="Hình thú cưng">
+              <img id="ppDashAvatar" src="image/cate-1.jpg" alt="Ảnh thú cưng" />
+            </div>
+          </div>
+          <div class="pp-card__body">
+            <div class="pp-pillrow" id="ppDashPills"></div>
+            <div class="pp-quick">
+              <button id="ppGoRecs" class="btn-primary" type="button">Gợi ý sản phẩm</button>
+              <button id="ppGoSize" class="btn-outline" type="button">Gợi ý size phụ kiện</button>
+              <button id="ppGoEdit" class="btn-outline" type="button">Chỉnh sửa hồ sơ</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pp-tabs card">
+          <div class="pp-tabbar" role="tablist" aria-label="Các mục">
+            <button class="pp-tab" type="button" data-tab="recs" aria-selected="true">Gợi ý nhanh</button>
+            <button class="pp-tab" type="button" data-tab="size" aria-selected="false">Size phụ kiện</button>
+            <button class="pp-tab" type="button" data-tab="privacy" aria-selected="false">Quyền riêng tư</button>
+            <button class="pp-tab" type="button" data-tab="services" aria-selected="false">Dịch vụ đã đặt</button>
+          </div>
+
+          <div class="pp-tabpanel" data-tabpanel="recs">
+            <p class="note">Chọn nhu cầu để mở danh sách sản phẩm (lọc theo loài/ghi chú).</p>
+            <div class="pp-recs-grid">
+              <button class="pp-rec" type="button" data-need="food">Thức ăn</button>
+              <button class="pp-rec" type="button" data-need="health">Sức khỏe</button>
+              <button class="pp-rec" type="button" data-need="hygiene">Vệ sinh</button>
+              <button class="pp-rec" type="button" data-need="accessory">Phụ kiện</button>
+              <button class="pp-rec" type="button" data-need="toy">Đồ chơi</button>
+            </div>
+
+            <p class="pp-help" style="margin-top:10px;">Có thể xem thêm: <a href="wizard.html">Wizard</a> • <a href="post-detail.html?id=huong-dan-chon-size-cho-cho-meo-tho-chim-hamster">Size guide</a></p>
+          </div>
+
+          <div class="pp-tabpanel" data-tabpanel="size" style="display:none;">
+            <div class="pp-size">
+              <h3>Gợi ý size</h3>
+
+              <div class="pp-size-grid" style="margin-top:10px;">
+                <figure class="pp-size-figure" aria-label="Minh họa hướng dẫn đo">
+                  <img src="image/pet-size-guide.png" alt="Hướng dẫn đo size phụ kiện" />
+                </figure>
+
+                <div class="pp-size-form">
+                  <label for="ppAccessory">Loại phụ kiện</label>
+                  <select id="ppAccessory">
+                    <option value="collar">Vòng cổ</option>
+                    <option value="harness">Yếm/đai</option>
+                    <option value="clothes">Áo</option>
+                  </select>
+
+                  <div class="grid-two" style="margin-top:10px;">
+                    <div>
+                      <label for="ppNeck">Vòng cổ (cm) (tùy chọn)</label>
+                      <input id="ppNeck" type="number" min="0" step="0.1" placeholder="Ví dụ: 28" />
+                      <p class="pp-help">Bạn có thể để trống; hệ thống ưu tiên ước lượng theo cân nặng.</p>
+                    </div>
+                    <div>
+                      <label for="ppChest">Vòng ngực (cm) (tùy chọn)</label>
+                      <input id="ppChest" type="number" min="0" step="0.1" placeholder="Ví dụ: 42" />
+                      <p class="pp-help">Nếu có số đo, kết quả sẽ chắc hơn.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pp-nav" style="margin-top:12px;">
+                <button id="ppCalcSize" class="btn-primary" type="button">Tính size</button>
+              </div>
+
+              <div id="ppSizeResult" class="pp-result" style="display:none;"></div>
+            </div>
+          </div>
+
+          <div class="pp-tabpanel" data-tabpanel="privacy" style="display:none;">
+            <h3>Cá nhân hóa</h3>
+            <label class="pp-check"><input type="checkbox" id="ppPersonalizeDash" /> Bật cá nhân hóa theo bé này</label>
+            <p class="pp-help">Bật để thấy gợi ý ở trang sản phẩm & chi tiết sản phẩm.</p>
+            <hr style="margin:12px 0;opacity:.15;" />
+            <button id="ppDeletePet" class="btn-outline" type="button">Xóa bé này</button>
+          </div>
+
+          <div class="pp-tabpanel" data-tabpanel="services" style="display:none;">
+            <h3>Dịch vụ đã đặt</h3>
+            <p class="note">Các lịch đặt từ trang Dịch vụ sẽ hiển thị ở đây (lưu cục bộ).</p>
+            <div id="ppBookings"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <script src="partials/contact.js"></script>
+  <script src="partials/footer.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/cart.js"></script>
+
+  <script>
+    (function () {
+      const Store = window.PetProfileStore;
+      const app = document.getElementById('petProfileApp');
+      if (!app || !Store) return;
+
+      const $ = (sel) => app.querySelector(sel);
+      const $$ = (sel) => Array.from(app.querySelectorAll(sel));
+
+      const toast = $('#ppToast');
+      const petSelect = $('#ppPetSelect');
+      const addPetBtn = $('#ppAddPet');
+
+      const screens = {
+        home: app.querySelector('[data-screen="home"]'),
+        onboarding: app.querySelector('[data-screen="onboarding"]'),
+        confirm: app.querySelector('[data-screen="confirm"]'),
+        dashboard: app.querySelector('[data-screen="dashboard"]')
+      };
+
+      function showToast(text, ok = true) {
+        if (!toast) return;
+        toast.textContent = text;
+        toast.classList.toggle('is-ok', !!ok);
+        toast.classList.toggle('is-bad', !ok);
+        toast.style.display = 'block';
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => (toast.style.display = 'none'), 2200);
+      }
+
+      function showScreen(name) {
+        Object.entries(screens).forEach(([k, el]) => {
+          if (!el) return;
+          el.style.display = (k === name) ? '' : 'none';
+        });
+      }
+
+      function speciesLabel(v) {
+        const map = { dog: 'Chó', cat: 'Mèo', bird: 'Chim', rabbit: 'Thỏ', hamster: 'Thú nhỏ' };
+        return map[v] || v || '—';
+      }
+
+      function stageLabel(v) {
+        const map = { puppy: 'Nhỏ Tuổi', adult: 'Trưởng thành', senior: 'Cao Tuổi' };
+        return map[v] || v || '—';
+      }
+
+      function renderSelect() {
+        if (!petSelect) return;
+        const profiles = Store.list();
+        const active = Store.getActive();
+
+        petSelect.innerHTML = profiles.length
+          ? profiles.map(p => `<option value="${p.id}">${p.name} • ${speciesLabel(p.species)}</option>`).join('')
+          : `<option value="">Chưa có hồ sơ</option>`;
+
+        if (active && profiles.some(p => p.id === active.id)) {
+          petSelect.value = active.id;
+        }
+
+        petSelect.disabled = profiles.length === 0;
+      }
+
+      // Onboarding state
+      let step = 1;
+      const form = $('#ppForm');
+      const errorEl = $('#ppError');
+      const nextBtn = $('#ppNext');
+      const backBtn = $('#ppBack');
+      const cancelBtn = $('#ppCancel');
+      const avatarInput = $('#ppAvatar');
+      const avatarPreview = $('#ppAvatarPreview');
+      let draftAvatar = null;
+
+      function setStep(n) {
+        step = Math.max(1, Math.min(3, n));
+        $$('.pp-step-panel').forEach(p => (p.style.display = p.getAttribute('data-step') === String(step) ? '' : 'none'));
+        $$('[data-step-pill]').forEach(pill => {
+          const on = pill.getAttribute('data-step-pill') === String(step);
+          pill.classList.toggle('is-active', on);
+        });
+        if (backBtn) backBtn.style.visibility = (step === 1) ? 'hidden' : 'visible';
+        if (nextBtn) nextBtn.textContent = (step === 3) ? 'Xem lại' : 'Tiếp tục';
+        if (errorEl) errorEl.style.display = 'none';
+      }
+
+      function readDraft() {
+        const name = ($('#ppName')?.value || '').trim();
+        const species = $('#ppSpecies')?.value || '';
+        const stage = $('#ppStage')?.value || 'adult';
+        const sex = $('#ppSex')?.value || 'unknown';
+
+        const weightRaw = ($('#ppWeight')?.value || '').trim();
+        const weightKg = weightRaw ? Number(weightRaw) : null;
+        const breed = ($('#ppBreed')?.value || '').trim() || null;
+        const note = ($('#ppNote')?.value || '').trim() || null;
+
+        const health = {
+          digest: !!$('#ppHdigest')?.checked,
+          skin: !!$('#ppHskin')?.checked,
+          urinary: !!$('#ppHurinary')?.checked,
+          overweight: !!$('#ppHoverweight')?.checked
+        };
+
+        return { name, species, stage, sex, weightKg, breed, note, health, avatar: draftAvatar };
+      }
+
+      function validateStep() {
+        const d = readDraft();
+        if (step === 1) {
+          if (!d.name) return 'Vui lòng nhập tên bé.';
+          if (!d.species) return 'Vui lòng chọn loài.';
+        }
+        if (step === 2) {
+          if (d.weightKg != null && (Number.isNaN(d.weightKg) || d.weightKg < 0 || d.weightKg > 200)) {
+            return 'Cân nặng không hợp lệ.';
+          }
+        }
+        return '';
+      }
+
+      function buildSummaryHtml(d) {
+        const pills = [];
+        pills.push(`${speciesLabel(d.species)} • ${stageLabel(d.stage)}`);
+        if (d.weightKg != null) pills.push(`~${d.weightKg}kg`);
+        if (d.breed) pills.push(d.breed);
+        if (d.note) pills.push(d.note);
+        const healthTags = [];
+        if (d.health.digest) healthTags.push('Tiêu hóa');
+        if (d.health.skin) healthTags.push('Da & lông');
+        if (d.health.urinary) healthTags.push('Tiết niệu');
+        if (d.health.overweight) healthTags.push('Kiểm soát cân nặng');
+
+        return `
+          <div class="pp-summary__row"><strong>Tên:</strong> ${d.name || '—'}</div>
+          <div class="pp-summary__row"><strong>Thông tin:</strong> ${pills.length ? pills.join(' • ') : '—'}</div>
+          <div class="pp-summary__row"><strong>Sức khỏe:</strong> ${healthTags.length ? healthTags.join(' • ') : 'Không ghi nhận'}</div>
+        `;
+      }
+
+      // Dashboard render
+      const dashName = $('#ppDashName');
+      const dashMeta = $('#ppDashMeta');
+      const dashPills = $('#ppDashPills');
+      const dashAvatar = $('#ppDashAvatar');
+      const personalizeDash = $('#ppPersonalizeDash');
+      const bookingsEl = $('#ppBookings');
+
+      function fmtMoney(n) {
+        const num = Number(n);
+        if (!Number.isFinite(num)) return '';
+        return num.toLocaleString('vi-VN') + ' VND';
+      }
+
+      function readBookings() {
+        const KEY = 'service_bookings_v1';
+        try {
+          const raw = localStorage.getItem(KEY);
+          const arr = raw ? JSON.parse(raw) : [];
+          return Array.isArray(arr) ? arr : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function writeBookings(list) {
+        const KEY = 'service_bookings_v1';
+        localStorage.setItem(KEY, JSON.stringify(Array.isArray(list) ? list : []));
+      }
+
+      function updateBooking(id, patch) {
+        if (!id) return;
+        const all = readBookings();
+        const next = all.map((b) => (b && b.id === id ? { ...b, ...patch, updatedAt: Date.now() } : b));
+        writeBookings(next);
+      }
+
+      function deleteBooking(id) {
+        if (!id) return;
+        const all = readBookings();
+        const next = all.filter((b) => b && b.id !== id);
+        writeBookings(next);
+      }
+
+      function renderBookings() {
+        if (!bookingsEl) return;
+        const pet = Store.getActive();
+        const all = readBookings();
+        const list = pet
+          ? all.filter(b => b && b.petId === pet.id)
+          : all;
+
+        if (!list.length) {
+          bookingsEl.innerHTML = '<p class="note" style="margin-top:10px;">Chưa có lịch đặt dịch vụ.</p>';
+          return;
+        }
+
+        const rows = list.slice(0, 20).map((b) => {
+          const when = `${b.date || '—'} • ${b.time || '—'}`;
+          const price = b.svPrice != null ? fmtMoney(b.svPrice) : '';
+          const petTag = b.petName ? ` • ${b.petName}` : '';
+          const icon = b.svIcon ? `<img src="${b.svIcon}" alt="" style="width:40px;height:40px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.06);object-fit:contain;" />` : '';
+          const status = b.status || 'booked';
+          const statusPill = status === 'cancelled'
+            ? `<span class="pp-pill" style="background: rgba(220,38,38,.08); color: #b00020; border-color: rgba(220,38,38,.20);">Đã hủy</span>`
+            : `<span class="pp-pill" style="opacity:.85;">Đã đặt</span>`;
+          const canCancel = status !== 'cancelled';
+          return `
+            <div class="card" style="margin-top:10px;">
+              <div style="display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;">
+                <div style="display:flex;gap:12px;align-items:flex-start;min-width:260px;flex:1 1 auto;">
+                  ${icon}
+                  <div>
+                    <div style="font-weight:900;color:var(--text-heading);">${b.svTitle || b.sv || 'Dịch vụ'}</div>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+                      ${statusPill}
+                      <span style="opacity:.75;">${when}${petTag}</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+                  <div style="font-weight:900;color:var(--cta);">${price}</div>
+                  ${canCancel ? `<button class="btn-outline" type="button" data-booking-action="cancel" data-booking-id="${b.id}">Hủy</button>` : ''}
+                  <button class="btn-outline" type="button" data-booking-action="delete" data-booking-id="${b.id}">Xóa</button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        bookingsEl.innerHTML = rows;
+      }
+
+      function renderDashboard() {
+        const pet = Store.getActive();
+        if (!pet) {
+          showScreen('home');
+          return;
+        }
+
+        if (dashName) dashName.textContent = pet.name;
+        if (dashMeta) dashMeta.textContent = `${speciesLabel(pet.species)} • ${stageLabel(pet.stage)}`;
+
+        if (dashAvatar) {
+          const avatarMap = {
+            dog: 'image/cate-1.jpg',
+            cat: 'image/cate-2.jpg',
+            rabbit: 'image/cate-3.jpg',
+            bird: 'image/cate-4.jpg',
+            hamster: 'image/cate-5.jpg'
+          };
+          dashAvatar.src = pet.avatar || avatarMap[pet.species] || 'image/cate-1.jpg';
+          dashAvatar.alt = `Ảnh ${speciesLabel(pet.species)}`;
+        }
+
+        if (dashPills) {
+          const pills = [];
+          if (pet.weightKg != null) pills.push(`~${pet.weightKg}kg`);
+          if (pet.breed) pills.push(pet.breed);
+          if (pet.note) pills.push(pet.note);
+          if (pet.health?.digest) pills.push('Tiêu hóa');
+          if (pet.health?.skin) pills.push('Da & lông');
+          if (pet.health?.urinary) pills.push('Tiết niệu');
+          if (pet.health?.overweight) pills.push('Giảm cân');
+          dashPills.innerHTML = pills.length
+            ? pills.map(t => `<span class="pp-pill">${t}</span>`).join('')
+            : '<span class="pp-pill" style="opacity:.7;">Chưa có ghi chú</span>';
+        }
+
+        if (personalizeDash) {
+          personalizeDash.checked = !!pet.personalization?.enabled;
+        }
+
+        renderBookings();
+      }
+
+      // Size helper
+      function calcSize(pet, accessory, neckCm, chestCm) {
+        // Lightweight sizing: primary estimate by weight; measurements only increase confidence.
+        if (!pet) return { level: 'bad', text: 'Chưa có hồ sơ.' };
+
+        const weightKg = (pet.weightKg != null && !Number.isNaN(pet.weightKg)) ? Number(pet.weightKg) : null;
+        const neck = (neckCm != null && !Number.isNaN(neckCm)) ? Number(neckCm) : null;
+        const chest = (chestCm != null && !Number.isNaN(chestCm)) ? Number(chestCm) : null;
+
+        const hasWeight = weightKg != null && weightKg > 0;
+        const hasMeasure = (neck != null && neck > 0) || (chest != null && chest > 0);
+
+        if (!hasWeight && !hasMeasure) {
+          return {
+            level: 'warn',
+            text: 'Bạn chưa có cân nặng. Hãy nhập cân nặng trong hồ sơ (hoặc nhập số đo) để hệ thống ước lượng size.'
+          };
+        }
+
+        // Weight thresholds (simple, consistent)
+        const byWeight = (w, kind) => {
+          if (kind === 'clothes') {
+            if (w <= 2.5) return 'S';
+            if (w <= 6) return 'M';
+            if (w <= 12) return 'L';
+            return 'XL';
+          }
+          // collar / harness
+          if (w <= 3) return 'S';
+          if (w <= 8) return 'M';
+          if (w <= 15) return 'L';
+          return 'XL';
+        };
+
+        let size = 'M';
+        let confidence = 'Vừa';
+
+        if (hasWeight) {
+          size = byWeight(weightKg, accessory);
+          confidence = hasMeasure ? 'Cao' : 'Vừa';
+        } else {
+          // Fallback to measurement-only when weight is missing
+          const base = Math.max(neck || 0, chest || 0);
+          if (base <= 30) size = 'S';
+          else if (base <= 45) size = 'M';
+          else size = 'L';
+          confidence = 'Vừa';
+        }
+
+        const tips = [];
+        if (hasWeight) tips.push(`Ước lượng theo cân nặng ~${weightKg}kg.`);
+        if (!hasWeight) tips.push('Không có cân nặng nên ước lượng theo số đo (khuyến nghị bổ sung cân nặng để chắc hơn).');
+        if (accessory === 'clothes') tips.push('Áo thường cần vòng ngực; nếu có số đo vòng ngực sẽ chính xác hơn.');
+        if (accessory === 'collar') tips.push('Vòng cổ nên dư 1–2cm để thoải mái.');
+        if (accessory === 'harness') tips.push('Yếm/đai thường ưu tiên vòng ngực.');
+
+        return {
+          level: 'ok',
+          text: `Gợi ý size: ${size} (độ tin cậy: ${confidence}). ${tips.join(' ')}`
+        };
+      }
+
+      function openProductsForNeed(need) {
+        const pet = Store.getActive();
+        if (!pet) {
+          showToast('Bạn chưa có hồ sơ. Hãy tạo hồ sơ trước.', false);
+          showScreen('home');
+          return;
+        }
+        const params = new URLSearchParams();
+        params.set('pp', '1');
+        params.set('cat', pet.species);
+        params.set('need', need);
+        params.set('stage', pet.stage);
+        if (pet.note) params.set('q', pet.note);
+        window.location.href = 'products.html?' + params.toString();
+      }
+
+      function startOnboarding() {
+        if (form) form.reset();
+        draftAvatar = null;
+        if (avatarPreview) avatarPreview.src = 'image/cate-1.jpg';
+        if (avatarInput) avatarInput.value = '';
+        setStep(1);
+        showScreen('onboarding');
+      }
+
+      // Events
+      $('#ppStart')?.addEventListener('click', startOnboarding);
+      addPetBtn?.addEventListener('click', startOnboarding);
+
+      petSelect?.addEventListener('change', () => {
+        const id = petSelect.value;
+        if (!id) return;
+        Store.setActive(id);
+        renderSelect();
+        renderDashboard();
+        showToast('Đã chuyển bé đang xem.', true);
+        showScreen('dashboard');
+      });
+
+      app.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+
+        // bookings actions
+        if (btn.hasAttribute('data-booking-action')) {
+          const action = btn.getAttribute('data-booking-action');
+          const id = btn.getAttribute('data-booking-id');
+          if (!id) return;
+
+          if (action === 'cancel') {
+            if (!confirm('Hủy lịch đặt dịch vụ này?')) return;
+            updateBooking(id, { status: 'cancelled' });
+            renderBookings();
+            showToast('Đã hủy lịch.', true);
+            return;
+          }
+
+          if (action === 'delete') {
+            if (!confirm('Xóa lịch đặt dịch vụ này?')) return;
+            deleteBooking(id);
+            renderBookings();
+            showToast('Đã xóa lịch.', true);
+            return;
+          }
+        }
+
+        // quick weight chips
+        if (btn.classList.contains('pp-chip') && btn.hasAttribute('data-weight')) {
+          const v = btn.getAttribute('data-weight');
+          const input = $('#ppWeight');
+          if (input) input.value = v;
+          return;
+        }
+
+        // dashboard recs
+        if (btn.classList.contains('pp-rec')) {
+          const need = btn.getAttribute('data-need');
+          if (need) openProductsForNeed(need);
+          return;
+        }
+
+        // dashboard tab
+        if (btn.classList.contains('pp-tab')) {
+          const tab = btn.getAttribute('data-tab');
+          if (!tab) return;
+          $$('.pp-tab').forEach(t => t.setAttribute('aria-selected', t === btn ? 'true' : 'false'));
+          $$('.pp-tabpanel').forEach(p => {
+            p.style.display = p.getAttribute('data-tabpanel') === tab ? '' : 'none';
+          });
+          return;
+        }
+      });
+
+      nextBtn?.addEventListener('click', () => {
+        const err = validateStep();
+        if (err) {
+          if (errorEl) {
+            errorEl.textContent = err;
+            errorEl.style.display = 'block';
+          }
+          return;
+        }
+        if (step < 3) {
+          setStep(step + 1);
+          return;
+        }
+        // go confirm
+        const d = readDraft();
+        const sum = $('#ppSummary');
+        if (sum) sum.innerHTML = buildSummaryHtml(d);
+        showScreen('confirm');
+      });
+
+      backBtn?.addEventListener('click', () => setStep(step - 1));
+      cancelBtn?.addEventListener('click', () => {
+        const hasAny = Store.list().length > 0;
+        showScreen(hasAny ? 'dashboard' : 'home');
+      });
+
+      $('#ppEdit')?.addEventListener('click', () => {
+        showScreen('onboarding');
+      });
+
+      $('#ppSave')?.addEventListener('click', () => {
+        const d = readDraft();
+        const enabled = !!$('#ppPersonalize')?.checked;
+        const pet = {
+          id: Store.newId(),
+          name: d.name,
+          species: d.species,
+          stage: d.stage,
+          sex: d.sex,
+          weightKg: (d.weightKg != null && !Number.isNaN(d.weightKg)) ? d.weightKg : null,
+          breed: d.breed,
+          note: d.note,
+          health: d.health,
+          avatar: d.avatar,
+          personalization: { enabled },
+          createdAt: Date.now(),
+          updatedAt: Date.now()
+        };
+        Store.upsert(pet);
+        Store.setActive(pet.id);
+        renderSelect();
+        renderDashboard();
+        showToast('Đã lưu hồ sơ.', true);
+        showScreen('dashboard');
+      });
+
+      $('#ppGoRecs')?.addEventListener('click', () => {
+        $$('.pp-tab').find(t => t.getAttribute('data-tab') === 'recs')?.click();
+      });
+      $('#ppGoSize')?.addEventListener('click', () => {
+        $$('.pp-tab').find(t => t.getAttribute('data-tab') === 'size')?.click();
+      });
+      $('#ppGoEdit')?.addEventListener('click', () => {
+        // prefill from active
+        const pet = Store.getActive();
+        if (!pet) return;
+        showScreen('onboarding');
+        setStep(1);
+        $('#ppName').value = pet.name || '';
+        $('#ppSpecies').value = pet.species || '';
+        $('#ppStage').value = pet.stage || 'adult';
+        $('#ppSex').value = pet.sex || 'unknown';
+        $('#ppWeight').value = (pet.weightKg != null) ? String(pet.weightKg) : '';
+        $('#ppBreed').value = pet.breed || '';
+        $('#ppNote').value = pet.note || '';
+        $('#ppHdigest').checked = !!pet.health?.digest;
+        $('#ppHskin').checked = !!pet.health?.skin;
+        $('#ppHurinary').checked = !!pet.health?.urinary;
+        $('#ppHoverweight').checked = !!pet.health?.overweight;
+        draftAvatar = pet.avatar || null;
+        if (avatarPreview) avatarPreview.src = pet.avatar || 'image/cate-1.jpg';
+      });
+
+      avatarInput?.addEventListener('change', () => {
+        const file = avatarInput.files && avatarInput.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          draftAvatar = reader.result;
+          if (avatarPreview) avatarPreview.src = draftAvatar;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      $('#ppCalcSize')?.addEventListener('click', () => {
+        const pet = Store.getActive();
+        const accessory = $('#ppAccessory')?.value || 'collar';
+        const neck = Number($('#ppNeck')?.value || '') || null;
+        const chest = Number($('#ppChest')?.value || '') || null;
+
+        const out = calcSize(pet, accessory, neck, chest);
+        const el = $('#ppSizeResult');
+        if (!el) return;
+        el.style.display = 'block';
+        el.classList.toggle('is-ok', out.level === 'ok');
+        el.classList.toggle('is-warn', out.level === 'warn');
+        el.classList.toggle('is-bad', out.level === 'bad');
+        el.textContent = out.text;
+      });
+
+      personalizeDash?.addEventListener('change', () => {
+        const pet = Store.getActive();
+        if (!pet) return;
+        pet.personalization = pet.personalization || {};
+        pet.personalization.enabled = !!personalizeDash.checked;
+        pet.updatedAt = Date.now();
+        Store.upsert(pet);
+        showToast('Đã cập nhật cá nhân hóa.', true);
+      });
+
+      $('#ppDeletePet')?.addEventListener('click', () => {
+        const pet = Store.getActive();
+        if (!pet) return;
+        if (!confirm(`Xóa hồ sơ của ${pet.name}?`)) return;
+        Store.remove(pet.id);
+        renderSelect();
+        const hasAny = Store.list().length > 0;
+        if (hasAny) {
+          renderDashboard();
+          showScreen('dashboard');
+        } else {
+          showScreen('home');
+        }
+        showToast('Đã xóa hồ sơ.', true);
+      });
+
+      // init
+      Store.migrateFromV1();
+      renderSelect();
+
+      const hasAny = Store.list().length > 0;
+      if (hasAny) {
+        showScreen('dashboard');
+        renderDashboard();
+      } else {
+        showScreen('home');
+      }
+
+      // deep links
+      if (location.hash === '#dashboard' && hasAny) {
+        showScreen('dashboard');
+      }
+      if (location.hash === '#start') {
+        startOnboarding();
+      }
+
+      // ensure step 1 pill active
+      setStep(1);
+    })();
+  </script>
+</body>
+
+</html>

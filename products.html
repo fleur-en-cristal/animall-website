@@ -19,27 +19,11 @@
 <body>
     <!-- header, search, cart dùng chung -->
     <script src="partials/header.js"></script>
-    <!-- Ô tìm kiếm sản phẩm -->
-    <div class="search-panel" id="searchPanel" aria-hidden="true">
-        <div class="search-inner">
-            <input type="text" id="searchInput" placeholder="Tìm sản phẩm..." autocomplete="off" />
-            <button id="searchClose" class="search-close" type="button">&times;</button>
-        </div>
-
-        <div id="searchResults" class="search-results"></div>
-    </div>
 
     <section class="food" id="catalog">
         <div class="top-food">
-            <h2 id="catalogTitle">Tất cả sản phẩm</h2>
-            <!-- tab: điều hướng giữa các pet ngay tại trang catalog -->
-            <div class="food-ctg">
-                <a href="?cat=dog" class="food-btn">Cho Cún</a>
-                <a href="?cat=cat" class="food-btn">Cho Mèo</a>
-                <a href="?cat=bird" class="food-btn">Cho Chim</a>
-                <a href="?cat=rabbit" class="food-btn">Cho Thỏ</a>
-                <a href="?cat=hamster" class="food-btn">Cho Hamster</a>
-            </div>
+            <!-- Pet Profile personalization bar (rendered by js/script.js) -->
+            <div id="petPersonalizationBar" class="pet-bar" style="display:none;" aria-live="polite"></div>
         </div>
         <div class="food-product" id="catalogGrid"></div>
     </section>

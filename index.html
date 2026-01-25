@@ -19,185 +19,175 @@
 <body>
     <!-- header, search, cart dùng chung -->
     <script src="partials/header.js"></script>
-    <!-- Ô tìm kiếm sản phẩm -->
-    <div class="search-panel" id="searchPanel" aria-hidden="true">
-        <div class="search-inner">
-            <input type="text" id="searchInput" placeholder="Tìm sản phẩm..." autocomplete="off" />
-            <button id="searchClose" class="search-close" type="button">&times;</button>
-        </div>
-
-        <div id="searchResults" class="search-results"></div>
-    </div>
 
     <!--  home section css  -->
     <section class="container" id="home">
-        <div class="cont-text">
-            <h4>#Điểm đến tin cậy</h4>
-            <div class="text-img">
-                <h1>Thế giới tiện ích & dịch vụ cho <span><img src="image/pet.png" alt="pet"></span> Boss iu</h1>
-            </div>
-            <h3>Miễn phí giao hàng cho hóa đơn trên <span>500k </span><i class='bx bxs-star'></i></h3>
+        <div class="home-banner-wrapper">
+            <img src="image/banner2.png" alt="banner2.png">
+            
+            <!-- Khung tìm nhanh nằm trên phần trống bên trái -->
+            <div class="hero-search-overlay">
+                <div class="hero-quick-search" aria-label="Tìm nhanh">
+                    <h2 class="qs-heading">Những điều hoàn hảo cho Boss <span>🐾</span></h2>
+                    <p class="qs-subheading">Nhanh chóng tìm kiếm sản phẩm & dịch vụ phù hợp</p>
+                    <form id="quickSearchForm" class="qs-form">
+                        <div class="qs-row">
+                            <label class="sr-only" for="qsSpecies">Loài</label>
+                            <select id="qsSpecies" required>
+                                <option value="dog">Chó</option>
+                                <option value="cat">Mèo</option>
+                                <option value="bird">Chim</option>
+                                <option value="rabbit">Thỏ</option>
+                                <option value="hamster">Thú nhỏ</option>
+                            </select>
 
-            <div class="cont-btn">
-                <a href="#services" class="btn">Xem thêm <span><i class='bx bxs-cat'></i></span></a>
-            </div>
+                            <label class="sr-only" for="qsNeed">Nhu cầu</label>
+                            <select id="qsNeed" required>
+                                <option value="food">Thức ăn</option>
+                                <option value="health">Sức khỏe</option>
+                                <option value="hygiene">Vệ sinh</option>
+                                <option value="accessory">Phụ kiện</option>
+                                <option value="toy">Đồ chơi & huấn luyện</option>
+                                <option value="newbie">Dành cho người mới</option>
+                            </select>
 
-            <div class="text-bottom">
-                <div class="btom-1">
-                    <img src="image/dog-01.png" alt="dog01.png">
-                </div>
-                <div class="btom-2">
-                    <h5>Khách Hàng Thân Thiết</h5>
-
-                    <div class="icon-text">
-                        <div class="text">
-                            <h6><a href="#"><i class='bx bxs-star'></i></a><span>(7.2k đánh giá)</span></h6>
+                            <button type="submit" class="btn-primary qs-submit">Tìm nhanh</button>
                         </div>
-                    </div>
-                    <img src="image/mem.png" alt="mem.png">
+
+                        <div class="qs-shortcuts" aria-label="Lối tắt">
+                            <a class="qs-chip" href="products.html?sort=best">Sản phẩm phổ biến</a>
+                            <a class="qs-chip" href="services.html">Dịch vụ gần bạn</a>
+                            <a class="qs-chip" href="post-detail.html?id=huong-dan-chon-size-cho-cho-meo-tho-chim-hamster">Hướng dẫn chọn size</a>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </div>
-
-        <div class="cont-img">
-            <img src="image/banner.png" alt="banner.png">
         </div>
     </section>
 
     <!-- section phan loai -->
     <section class="category">
-        <div class="cate-top">
-            <h2>Những Người Bạn Nhỏ</h2>
+        <div class="category-header">
+            <h2>Khách Hàng Của Chúng Tôi</h2>
+            <p>Đồng hành cùng mọi thú cưng, từ những người bạn nhỏ dễ thương</p>
         </div>
 
-        <div class="main-cate">
-            <div class="main-one">
-                <div class="main-img">
-                    <img src="image/cate-1.jpg" alt="cate-1.jpg">
-                </div>
-                <div class="main-text">
-                    <h4>Chó cảnh</h4>
-                </div>
-            </div>
-
-            <div class="main-one">
-                <div class="main-img">
-                    <img src="image/cate-2.jpg" alt="cate-2.jpg">
-                </div>
-                <div class="main-text">
-                    <h4>Mèo cưng</h4>
+        <div class="category-grid">
+            <!-- Dog Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="image/cate-1.jpg" alt="Chó cảnh" class="category-bg-image">
+                    <div class="category-overlay"></div>
+                    <div class="category-caption">
+                        <h4>Chó Cảnh</h4>
+                    </div>
                 </div>
             </div>
 
-            <div class="main-one">
-                <div class="main-img">
-                    <img src="image/cate-3.jpg" alt="cate-3.jpg">
-                </div>
-                <div class="main-text">
-                    <h4>Thỏ kiểng</h4>
-                </div>
-            </div>
-
-            <div class="main-one">
-                <div class="main-img">
-                    <img src="image/cate-4.jpg" alt="cate-4.jpg">
-                </div>
-                <div class="main-text">
-                    <h4>Chim cảnh</h4>
+            <!-- Cat Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="image/cate-2.jpg" alt="Mèo cưng" class="category-bg-image">
+                    <div class="category-overlay"></div>
+                    <div class="category-caption">
+                        <h4>Mèo Cưng</h4>
+                    </div>
                 </div>
             </div>
 
-            <div class="main-one">
-                <div class="main-img">
-                    <img src="image/cate-5.jpg" alt="cate-5.jpg">
-                </div>
-                <div class="main-text">
-                    <h4>Chuột Hamster</h4>
+            <!-- Rabbit Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="image/cate-3.jpg" alt="Thỏ kiểng" class="category-bg-image">
+                    <div class="category-overlay"></div>
+                    <div class="category-caption">
+                        <h4>Thỏ Kiểng</h4>
+                    </div>
                 </div>
             </div>
 
+            <!-- Bird Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="image/cate-4.jpg" alt="Chim cảnh" class="category-bg-image">
+                    <div class="category-overlay"></div>
+                    <div class="category-caption">
+                        <h4>Chim Cảnh</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hamster Card -->
+            <div class="category-card">
+                <div class="category-image-wrapper">
+                    <img src="image/cate-5.jpg" alt="Chuột Hamster" class="category-bg-image">
+                    <div class="category-overlay"></div>
+                    <div class="category-caption">
+                        <h4>Chuột Hamster</h4>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </section>
 
     <!-- section dich vu -->
     <section class="services" id="services">
-        <div class="main-serv">
-            <div class="serv-1">
-                <h2>Dịch vụ chăm sóc<br> Thú cưng</h2>
+        <div class="services-header">
+            <h2>Dịch Vụ Chăm Sóc Thú Cưng</h2>
+            <p>Trải nghiệm dịch vụ chuyên nghiệp từ đội ngũ chuyên gia hàng đầu</p>
+        </div>
 
-                <div class="serv-detls">
-                    <div class="detls" data-key="grooming">
-                        <div class="detls-1">
-                            <p>Thẩm mỹ thú cưng</p>
-                        </div>
-                        <div class="detls-2">
-                            <a href="#"><i class='bx bx-right-arrow-alt'></i> </a>
-                        </div>
+        <div class="services-grid">
+            <!-- Service Card 1: Beauty -->
+            <div class="service-card" data-service="beauty" data-id="sv-grooming" data-price="250000">
+                <div class="service-image-wrapper">
+                    <img src="image/pet-beauty.png" alt="Thẩm mỹ thú cưng" class="service-bg-image">
+                    <div class="service-overlay"></div>
+                    <div class="service-caption">
+                        <h3>Thẩm Mỹ Thú Cưng</h3>
+                        <p>Grooming & Spa với quy trình chuyên biệt</p>
                     </div>
-                    <hr>
-                    <div class="detls" data-key="boarding">
-                        <div class="detls-1">
-                            <p>Khách sạn thú cưng</p>
-                        </div>
-                        <div class="detls-2">
-                            <a href="#"><i class='bx bx-right-arrow-alt'></i> </a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="detls" data-key="training">
-                        <div class="detls-1">
-                            <p>Huấn luyện thú cưng</p>
-                        </div>
-                        <div class="detls-2">
-                            <a href="#"><i class='bx bx-right-arrow-alt'></i> </a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="detls" data-key="health">
-                        <div class="detls-1">
-                            <p>Sức khỏe thú cưng</p>
-                        </div>
-                        <div class="detls-2">
-                            <a href="#"><i class='bx bx-right-arrow-alt'></i> </a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="detls" data-key="nanny">
-                        <div class="detls-1">
-                            <p>Bảo mẫu thú cưng</p>
-                        </div>
-                        <div class="detls-2">
-                            <a href="#"><i class='bx bx-right-arrow-alt'></i> </a>
-                        </div>
-                    </div>
+                    <a href="#" class="service-book-btn">Đặt Dịch Vụ <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
             </div>
-            <div class="serv-2">
-                <div class="middle">
-                    <div class="mid-img">
-                        <img id="serviceIcon" src="image/ser-scissors.png" alt="ser-scissors.png">
-                        <h5 id="serviceTitle">Thẩm mỹ thú cưng</h5>
-                    </div>
-                    <p id="serviceDesc">Trải nghiệm dịch vụ Grooming & Spa cao cấp với quy trình khép kín: Tắm vệ sinh,
-                        cắt tỉa nghệ thuật, chăm sóc móng và tai chuyên biệt. Chúng tôi sử dụng các dòng sản
-                        phẩm dưỡng lông hàng đầu giúp phục hồi hư tổn, mang lại vẻ ngoài hoàn hảo và sức khỏe
-                        dẻo dai cho thú cưng của bạn ngay từ lần trải nghiệm đầu tiên.</p>
 
-                    <div class="mid-btn">
-                        <a href="#" id="serviceBtn" class="serv-btn">Chọn dịch vụ<span><i
-                                    class='bx bxs-cat'></i></span></a>
+            <!-- Service Card 2: Nanny -->
+            <div class="service-card" data-service="nanny" data-id="sv-nanny" data-price="180000">
+                <div class="service-image-wrapper">
+                    <img src="image/pet-nanny.png" alt="Bảo mẫu thú cưng" class="service-bg-image">
+                    <div class="service-overlay"></div>
+                    <div class="service-caption">
+                        <h3>Bảo Mẫu Thú Cưng</h3>
+                        <p>Chăm sóc tận tình 24/7 cho thú cưng của bạn</p>
                     </div>
+                    <a href="#" class="service-book-btn">Đặt Dịch Vụ <i class='bx bx-right-arrow-alt'></i></a>
                 </div>
             </div>
-            <div class="serv-3">
-                <img class="img-1" src="image/ser-1.png" alt="ser-1.png">
-                <iframe class="img-2" width="350" height="195"
-                    src="https://www.youtube.com/embed/Zb3Wzs2FcFE?si=qUJiFBe5n2mOC_Uu" title="YouTube video player"
-                    frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
-                    gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen></iframe>
 
+            <!-- Service Card 3: Health -->
+            <div class="service-card" data-service="health" data-id="sv-health" data-price="200000">
+                <div class="service-image-wrapper">
+                    <img src="image/pet-health.png" alt="Sức khỏe thú cưng" class="service-bg-image">
+                    <div class="service-overlay"></div>
+                    <div class="service-caption">
+                        <h3>Sức Khỏe Thú Cưng</h3>
+                        <p>Khám sức khỏe và chăm sóc y tế toàn diện</p>
+                    </div>
+                    <a href="#" class="service-book-btn">Đặt Dịch Vụ <i class='bx bx-right-arrow-alt'></i></a>
+                </div>
+            </div>
+
+            <!-- Service Card 4: Training -->
+            <div class="service-card" data-service="training" data-id="sv-training" data-price="350000">
+                <div class="service-image-wrapper">
+                    <img src="image/pet-training.png" alt="Huấn luyện thú cưng" class="service-bg-image">
+                    <div class="service-overlay"></div>
+                    <div class="service-caption">
+                        <h3>Huấn Luyện Thú Cưng</h3>
+                        <p>Đào tạo kỹ năng và hành vi cho thú cưng</p>
+                    </div>
+                    <a href="#" class="service-book-btn">Đặt Dịch Vụ <i class='bx bx-right-arrow-alt'></i></a>
+                </div>
             </div>
         </div>
     </section>

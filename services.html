@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dịch vụ - Animall</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="services-page">
+  <script src="partials/header.js"></script>
+
+  <section class="page-section">
+    <h1>Dịch vụ</h1>
+   
+    <div class="sv-page-row" style="margin-top:16px;">
+      <div class="card" id="booking" style="padding:16px;">
+        <h3>Đặt lịch nhanh</h3>
+        <form id="bookingForm" class="form" style="margin-top:12px;">
+
+        <div class="sv-booking-top">
+          <div id="svPreview" class="sv-preview" style="display:none;">
+            <img id="svPreviewImg" src="" alt="" loading="lazy" />
+            <div class="sv-preview__text">
+              <div id="svPreviewTitle" class="sv-preview__title">—</div>
+              <div id="svPreviewPrice" class="sv-preview__price">—</div>
+              <div id="svPreviewDesc" class="sv-preview__desc"></div>
+            </div>
+          </div>
+
+          <div class="sv-booking-fields">
+            <div class="grid-two">
+              <div>
+                <label for="sv">Dịch vụ</label>
+                <select id="sv" required>
+                  <option value="grooming">Spa & grooming</option>
+                  <option value="health">Sức khỏe thú cưng</option>
+                  <option value="boarding">Nội trú / trông giữ</option>
+                  <option value="training">Huấn luyện</option>
+                  <option value="nanny">Bảo mẫu</option>
+                </select>
+              </div>
+              <div>
+                <label for="species">Theo loài</label>
+                <select id="species" required>
+                  <option value="dog">Chó</option>
+                  <option value="cat">Mèo</option>
+                  <option value="bird">Chim</option>
+                  <option value="hamster">Thú nhỏ</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid-two">
+              <div>
+                <label for="date">Ngày</label>
+                <input id="date" type="date" required />
+              </div>
+              <div>
+                <label for="time">Giờ</label>
+                <select id="time" required>
+                  <option value="09:00">09:00</option>
+                  <option value="10:30">10:30</option>
+                  <option value="13:30">13:30</option>
+                  <option value="15:00">15:00</option>
+                  <option value="17:00">17:00</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="sv-actions grid-two">
+              <a class="btn-outline" href="pet-profile.html">Mở Pet Profile</a>
+              <button class="btn-primary" type="submit">Xác nhận đặt lịch</button>
+            </div>
+          </div>
+        </div>
+        </form>
+
+        <p id="bookingMsg" style="margin-top:10px; display:none;"></p>
+      </div>
+
+      <div class="card sv-newbie" style="padding:16px;">
+        <h3>Dành cho người mới</h3>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
+          <a class="btn" href="posts.html">Lần đầu đi spa cần chuẩn bị gì?</a>
+          <a class="btn" href="posts.html">Lịch tiêm cơ bản</a>
+          <a class="btn" href="contact.html">Liên hệ / chat cửa hàng</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="partials/contact.js"></script>
+  <script src="partials/footer.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/cart.js"></script>
+
+  <script>
+    (function () {
+      const form = document.getElementById('bookingForm');
+      const msg = document.getElementById('bookingMsg');
+      const svSelect = document.getElementById('sv');
+      const preview = document.getElementById('svPreview');
+      const previewImg = document.getElementById('svPreviewImg');
+      const previewTitle = document.getElementById('svPreviewTitle');
+      const previewPrice = document.getElementById('svPreviewPrice');
+      const previewDesc = document.getElementById('svPreviewDesc');
+      if (!form || !msg) return;
+
+      const money = (n) => (Number(n) || 0).toLocaleString('vi-VN') + ' VND';
+      const SERVICE_URL = 'data/services.json';
+      let services = null;
+
+      const normalizeServiceKey = (raw) => {
+        if (!raw) return '';
+        const s = String(raw).trim().toLowerCase();
+        if (!s) return '';
+        if (s.startsWith('sv-')) return s.slice(3);
+        if (s === 'beauty') return 'grooming';
+        return s;
+      };
+
+      const scrollToBooking = () => {
+        const el = document.getElementById('booking');
+        if (!el) return;
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+
+      const fallbackTitle = (key) => {
+        const map = {
+          grooming: 'Thẩm mỹ thú cưng',
+          health: 'Sức khỏe thú cưng',
+          boarding: 'Nội trú thú cưng',
+          training: 'Huấn luyện thú cưng',
+          nanny: 'Bảo mẫu thú cưng',
+        };
+        return map[key] || key;
+      };
+
+      const updatePreview = () => {
+        if (!preview || !svSelect) return;
+        const key = svSelect.value;
+        const sv = services && services[key] ? services[key] : null;
+
+        if (!sv) {
+          preview.style.display = 'none';
+          return;
+        }
+
+        if (previewImg) {
+          previewImg.src = sv.icon || '';
+          previewImg.alt = sv.title || fallbackTitle(key);
+        }
+        if (previewTitle) previewTitle.textContent = sv.title || fallbackTitle(key);
+        if (previewPrice) previewPrice.textContent = money(sv.price);
+        if (previewDesc) previewDesc.textContent = sv.desc || '';
+        preview.style.display = 'flex';
+      };
+
+      fetch(SERVICE_URL, { cache: 'no-store' })
+        .then(r => (r.ok ? r.json() : Promise.reject(new Error('Không tải được services.json'))))
+        .then((data) => {
+          services = data;
+          updatePreview();
+        })
+        .catch(() => {
+          // fallback: hide preview if data not available
+          if (preview) preview.style.display = 'none';
+        });
+
+      svSelect?.addEventListener('change', updatePreview);
+
+      // Preselect from URL: services.html?sv=grooming#booking
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const desiredRaw = params.get('sv') || params.get('service') || params.get('id');
+        const desired = normalizeServiceKey(desiredRaw);
+        if (desired && svSelect && Array.from(svSelect.options).some(o => o.value === desired)) {
+          svSelect.value = desired;
+          updatePreview();
+          scrollToBooking();
+        } else if (window.location.hash === '#booking') {
+          scrollToBooking();
+        }
+      } catch {
+        // ignore
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const sv = document.getElementById('sv').value;
+        const species = document.getElementById('species').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+
+        const pet = (window.PetProfileStore && typeof window.PetProfileStore.getActive === 'function')
+          ? window.PetProfileStore.getActive()
+          : null;
+
+        const svMeta = services && services[sv] ? services[sv] : null;
+        const payload = {
+          id: 'bk-' + Date.now(),
+          sv,
+          svTitle: svMeta?.title || fallbackTitle(sv),
+          svPrice: svMeta?.price ?? null,
+          svIcon: svMeta?.icon || '',
+          species,
+          date,
+          time,
+          petId: pet?.id || null,
+          petName: pet?.name || null,
+          createdAt: Date.now(),
+        };
+
+        // Back-compat
+        localStorage.setItem('lastBooking', JSON.stringify(payload));
+
+        const KEY = 'service_bookings_v1';
+        let history = [];
+        try {
+          history = JSON.parse(localStorage.getItem(KEY) || '[]');
+          if (!Array.isArray(history)) history = [];
+        } catch {
+          history = [];
+        }
+        history.unshift(payload);
+        localStorage.setItem(KEY, JSON.stringify(history));
+
+        msg.style.display = 'block';
+        msg.style.color = '#0a7f2e';
+        msg.textContent = pet?.name
+          ? `Đã đặt lịch (mô phỏng) cho ${pet.name}. Mở Pet Profile để xem lại.`
+          : 'Đã đặt lịch (mô phỏng). Mở Pet Profile để xem lại.';
+      });
+    })();
+  </script>
+</body>
+
+</html>

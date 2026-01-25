@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khuyến mãi - Animall</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="promotions-page">
+  <script src="partials/header.js"></script>
+
+  <section class="page-section">
+    <div class="promo-headbar">
+      <h1>Khuyến mãi</h1>
+
+      <div class="promo-headbar-right" aria-label="Flash sale và bộ lọc">
+        <span class="promo-countdown" aria-live="polite">
+          <span class="promo-countdown__label">Kết thúc sau:</span>
+          <span id="promoCountdown">--:--:--</span>
+        </span>
+
+        <div class="promo-toolbar">
+          <div class="promo-field">
+            <label class="sr-only" for="promoSpecies">Loài</label>
+            <select id="promoSpecies">
+              <option value="all">Sắp xếp theo loài</option>
+              <option value="dog">Chó</option>
+              <option value="cat">Mèo</option>
+              <option value="bird">Chim</option>
+              <option value="hamster">Thú nhỏ</option>
+              <option value="rabbit">Thỏ</option>
+            </select>
+          </div>
+
+          <div class="promo-field">
+            <label class="sr-only" for="promoSort">Sắp xếp</label>
+            <select id="promoSort">
+              <option value="random">Lọc ngẫu nhiên</option>
+              <option value="price-asc">Giá tăng dần</option>
+              <option value="price-desc">Giá giảm dần</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="promoCatalog" style="margin-top:16px;">
+      <div id="promoProductGrid" class="food-product promo-product-grid" aria-live="polite"></div>
+      <p id="promoEmpty" class="note" style="display:none;margin-top:12px;">Không có sản phẩm phù hợp.</p>
+    </div>
+
+    <div class="promo-combo" style="margin-top:22px;">
+      <h2>Combo tiết kiệm</h2>
+      <p class="promo-hint">Gợi ý combo 3 món (mô phỏng) — bấm để thêm tất cả vào giỏ.</p>
+      <div id="promoComboGrid" class="promo-combo-grid"></div>
+    </div>
+  </section>
+
+  <script src="partials/contact.js"></script>
+  <script src="partials/footer.js"></script>
+  <script src="js/script.js"></script>
+  <script src="js/promotions.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+
+</html>
