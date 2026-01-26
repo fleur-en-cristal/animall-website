@@ -195,7 +195,7 @@
 /* Không dùng sticky: module “Đơn hàng của bạn” đứng yên như form */
 .checkout-summary{ position: static; }
 
-/* ====== Responsive ====== */
+/* ====== Giao diện thích ứng ====== */
 @media (max-width: 992px){
   .checkout-grid{ grid-template-columns: 1fr; }
   .grid-two{ grid-template-columns: 1fr; }
@@ -203,7 +203,7 @@
   .btn-primary, .btn-outline{ flex: 1 1 180px; }
 }
 
-/* ====== Fine tune cho giỏ trong Drawer (nếu có) ====== */
+/* ====== Tinh chỉnh cho giỏ trong ngăn kéo (Drawer) (nếu có) ====== */
 .cart-footer .cart-actions .btn-primary,
 .checkout .cart-actions .btn-primary{
   background: var(--main-color);

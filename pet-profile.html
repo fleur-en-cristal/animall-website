@@ -33,7 +33,7 @@
 
     <div id="ppToast" class="pp-toast" role="status" aria-live="polite" style="display:none;"></div>
 
-    <!-- Screen A: Home (no profile) -->
+    <!-- Màn hình A: Giới thiệu (chưa có hồ sơ) -->
     <section class="pp-screen" data-screen="home" aria-label="Giới thiệu Pet Profile">
       <div class="pp-hero">
         <div class="pp-hero__text">
@@ -73,7 +73,7 @@
       </div>
     </section>
 
-    <!-- Screen B: Onboarding stepper -->
+    <!-- Màn hình B: Các bước tạo hồ sơ -->
     <section class="pp-screen" data-screen="onboarding" aria-label="Tạo hồ sơ" style="display:none;">
       <div class="pp-stepper">
         <div class="pp-stepper__head">
@@ -86,7 +86,7 @@
         </div>
 
         <form id="ppForm" class="pp-form" novalidate>
-          <!-- Step 1 -->
+          <!-- Bước 1 -->
           <div class="pp-step-panel" data-step="1">
             <div class="grid-two">
               <div>
@@ -139,7 +139,7 @@
             </div>
           </div>
 
-          <!-- Step 2 -->
+          <!-- Bước 2 -->
           <div class="pp-step-panel" data-step="2" style="display:none;">
             <div class="grid-two">
               <div>
@@ -166,7 +166,7 @@
             </div>
           </div>
 
-          <!-- Step 3 -->
+          <!-- Bước 3 -->
           <div class="pp-step-panel" data-step="3" style="display:none;">
             <div class="card pp-subcard">
               <h3>Sức khỏe & ưu tiên</h3>
@@ -193,7 +193,7 @@
       </div>
     </section>
 
-    <!-- Screen C: Confirm + privacy -->
+    <!-- Màn hình C: Xác nhận + quyền riêng tư -->
     <section class="pp-screen" data-screen="confirm" aria-label="Xác nhận" style="display:none;">
       <div class="card pp-confirm">
         <h2>Xác nhận hồ sơ</h2>
@@ -211,7 +211,7 @@
       </div>
     </section>
 
-    <!-- Screen D: Dashboard -->
+    <!-- Màn hình D: Dashboard (tổng quan) -->
     <section class="pp-screen" data-screen="dashboard" aria-label="Dashboard" style="display:none;">
       <div class="pp-dashboard">
         <div class="pp-card card">
@@ -381,7 +381,7 @@
         petSelect.disabled = profiles.length === 0;
       }
 
-      // Onboarding state
+      // Trạng thái onboarding (tạo hồ sơ)
       let step = 1;
       const form = $('#ppForm');
       const errorEl = $('#ppError');
@@ -458,7 +458,7 @@
         `;
       }
 
-      // Dashboard render
+      // Render dashboard (bảng tổng quan)
       const dashName = $('#ppDashName');
       const dashMeta = $('#ppDashMeta');
       const dashPills = $('#ppDashPills');
@@ -594,9 +594,9 @@
         renderBookings();
       }
 
-      // Size helper
+      // Hỗ trợ chọn size
       function calcSize(pet, accessory, neckCm, chestCm) {
-        // Lightweight sizing: primary estimate by weight; measurements only increase confidence.
+        // Ước lượng size nhẹ: ưu tiên theo cân nặng; số đo chỉ tăng độ tin cậy.
         if (!pet) return { level: 'bad', text: 'Chưa có hồ sơ.' };
 
         const weightKg = (pet.weightKg != null && !Number.isNaN(pet.weightKg)) ? Number(pet.weightKg) : null;
@@ -613,7 +613,7 @@
           };
         }
 
-        // Weight thresholds (simple, consistent)
+        // Ngưỡng cân nặng (đơn giản, nhất quán)
         const byWeight = (w, kind) => {
           if (kind === 'clothes') {
             if (w <= 2.5) return 'S';
@@ -621,7 +621,7 @@
             if (w <= 12) return 'L';
             return 'XL';
           }
-          // collar / harness
+          // Vòng cổ / đai yếm
           if (w <= 3) return 'S';
           if (w <= 8) return 'M';
           if (w <= 15) return 'L';
@@ -635,7 +635,7 @@
           size = byWeight(weightKg, accessory);
           confidence = hasMeasure ? 'Cao' : 'Vừa';
         } else {
-          // Fallback to measurement-only when weight is missing
+          // Dự phòng: chỉ dùng số đo khi thiếu cân nặng
           const base = Math.max(neck || 0, chest || 0);
           if (base <= 30) size = 'S';
           else if (base <= 45) size = 'M';
@@ -681,7 +681,7 @@
         showScreen('onboarding');
       }
 
-      // Events
+      // Sự kiện
       $('#ppStart')?.addEventListener('click', startOnboarding);
       addPetBtn?.addEventListener('click', startOnboarding);
 
@@ -699,7 +699,7 @@
         const btn = e.target.closest('button');
         if (!btn) return;
 
-        // bookings actions
+        // thao tác với lịch đặt
         if (btn.hasAttribute('data-booking-action')) {
           const action = btn.getAttribute('data-booking-action');
           const id = btn.getAttribute('data-booking-id');
@@ -722,7 +722,7 @@
           }
         }
 
-        // quick weight chips
+        // chip chọn nhanh cân nặng
         if (btn.classList.contains('pp-chip') && btn.hasAttribute('data-weight')) {
           const v = btn.getAttribute('data-weight');
           const input = $('#ppWeight');
@@ -730,14 +730,14 @@
           return;
         }
 
-        // dashboard recs
+        // gợi ý trên dashboard
         if (btn.classList.contains('pp-rec')) {
           const need = btn.getAttribute('data-need');
           if (need) openProductsForNeed(need);
           return;
         }
 
-        // dashboard tab
+        // tab trên dashboard
         if (btn.classList.contains('pp-tab')) {
           const tab = btn.getAttribute('data-tab');
           if (!tab) return;
@@ -762,7 +762,7 @@
           setStep(step + 1);
           return;
         }
-        // go confirm
+        // chuyển sang bước xác nhận
         const d = readDraft();
         const sum = $('#ppSummary');
         if (sum) sum.innerHTML = buildSummaryHtml(d);
@@ -812,7 +812,7 @@
         $$('.pp-tab').find(t => t.getAttribute('data-tab') === 'size')?.click();
       });
       $('#ppGoEdit')?.addEventListener('click', () => {
-        // prefill from active
+        // điền sẵn từ hồ sơ đang chọn
         const pet = Store.getActive();
         if (!pet) return;
         showScreen('onboarding');
@@ -886,7 +886,7 @@
         showToast('Đã xóa hồ sơ.', true);
       });
 
-      // init
+      // khởi tạo
       Store.migrateFromV1();
       renderSelect();
 
@@ -898,7 +898,7 @@
         showScreen('home');
       }
 
-      // deep links
+      // deep link (liên kết sâu)
       if (location.hash === '#dashboard' && hasAny) {
         showScreen('dashboard');
       }
@@ -906,7 +906,7 @@
         startOnboarding();
       }
 
-      // ensure step 1 pill active
+      // đảm bảo pill bước 1 đang active
       setStep(1);
     })();
   </script>

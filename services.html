@@ -171,13 +171,13 @@
           updatePreview();
         })
         .catch(() => {
-          // fallback: hide preview if data not available
+          // dự phòng: ẩn khung xem trước nếu không có dữ liệu
           if (preview) preview.style.display = 'none';
         });
 
       svSelect?.addEventListener('change', updatePreview);
 
-      // Preselect from URL: services.html?sv=grooming#booking
+      // Chọn sẵn theo URL: services.html?sv=grooming#booking
       try {
         const params = new URLSearchParams(window.location.search);
         const desiredRaw = params.get('sv') || params.get('service') || params.get('id');
@@ -190,7 +190,7 @@
           scrollToBooking();
         }
       } catch {
-        // ignore
+        // bỏ qua
       }
 
       form.addEventListener('submit', function (e) {
@@ -219,7 +219,7 @@
           createdAt: Date.now(),
         };
 
-        // Back-compat
+        // Tương thích ngược
         localStorage.setItem('lastBooking', JSON.stringify(payload));
 
         const KEY = 'service_bookings_v1';

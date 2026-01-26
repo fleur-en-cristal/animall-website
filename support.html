@@ -72,7 +72,7 @@
       const money = (s) => String(s || '').trim();
       let products = null;
 
-      // Optional: use product data to render purchased items
+      // Tùy chọn: dùng dữ liệu sản phẩm để render danh sách đã mua
       fetch('data/products.json', { cache: 'no-store' })
         .then(r => (r.ok ? r.json() : Promise.reject(new Error('Không tải được products.json'))))
         .then((data) => { products = data; })
@@ -164,7 +164,7 @@
         const h = hashCode(orderCode);
         const stage = h % 4; // 0..3
 
-        // pseudo-random (deterministic) map point around HCMC
+        // tạo điểm bản đồ giả ngẫu nhiên (deterministic) quanh TP.HCM
         const r1 = ((h >>> 0) % 10000) / 10000;
         const r2 = (((h >>> 12) >>> 0) % 10000) / 10000;
         const lat = 10.75 + (r1 - 0.5) * 0.25;

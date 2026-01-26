@@ -1,5 +1,5 @@
 ﻿// promotions.js
-// Trang Khuyến mãi: 10 sản phẩm ngẫu nhiên + countdown + lọc + sort + combo tiết kiệm
+// Trang Khuyến mãi: 10 sản phẩm ngẫu nhiên + đếm ngược + lọc + sắp xếp + combo tiết kiệm
 
 (function () {
   'use strict';

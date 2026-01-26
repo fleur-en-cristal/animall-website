@@ -146,7 +146,7 @@ window.renderWishlistPopover = async function (popEl) {
   `;
 };
 
-// delegated click for wishlist hearts on product cards
+// bắt sự kiện click ủy quyền cho nút tim yêu thích trên thẻ sản phẩm
 document.addEventListener('click', (e) => {
   const removeBtn = e.target.closest('[data-wishlist-remove]');
   if (removeBtn) {
@@ -154,7 +154,7 @@ document.addEventListener('click', (e) => {
     e.stopPropagation();
     const cat = removeBtn.getAttribute('data-cat');
     const idx = removeBtn.getAttribute('data-idx');
-    Wishlist.toggle(cat, idx); // ensure removed if present
+    Wishlist.toggle(cat, idx); // đảm bảo đã gỡ khỏi danh sách nếu đang tồn tại
     const badge = document.getElementById('wishCount');
     if (badge) {
       const c = Wishlist.count();
@@ -909,7 +909,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           current.personalization.enabled = !!toggle.checked;
           current.updatedAt = Date.now();
           Store.upsert(current);
-          // re-render quickly
+          // render lại nhanh
           initPetBar();
         });
       }
@@ -926,7 +926,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       reptile: 'Sản phẩm cho Bò sát'
     };
 
-    // Catalog title removed; no update needed.
+    // Đã bỏ tiêu đề danh mục; không cần cập nhật.
 
     grid.innerHTML = '<p style="padding:1rem">Đang tải...</p>';
     
@@ -941,7 +941,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const normalize = (s) => String(s || '').toLowerCase();
       const joinText = (p) => normalize([p.tag, p.title, p.desc].filter(Boolean).join(' '));
 
-      // map keyword sets for IA needs/topics (best-effort with existing dataset)
+      // ánh xạ bộ từ khóa cho nhu cầu/chủ đề (ước lượng theo dataset hiện có)
       const NEED_KEYWORDS = {
         food: ['thức ăn', 'dinh dưỡng', 'hạt', 'pate', 'snack', 'ăn vặt', 'sữa', 'súp', 'ciao', 'churu', 'cỏ mèo', 'timothy', 'alfalfa', 'hướng dương', 'kê', 'sâu'],
         health: ['sức khỏe', 'vitamin', 'canxi', 'tiêu hóa', 'tiết niệu', 've', 'rận', 'giun', 'khử khuẩn', 'bổ sung'],
@@ -955,23 +955,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       let list = listRaw.map((p, idx) => ({ ...p, __idx: idx }));
 
-      // filter by need (best-effort)
+      // lọc theo nhu cầu (ước lượng)
       if (need) {
         const keys = NEED_KEYWORDS[need] || [need];
         const filtered = list.filter(p => {
           const t = joinText(p);
           return keys.some(k => t.includes(normalize(k)));
         });
-        // fallback: if no match, show full category list
+        // dự phòng: nếu không khớp, hiển thị toàn bộ danh sách theo danh mục
         if (filtered.length) list = filtered;
       }
 
-      // filter by free text
+      // lọc theo từ khóa nhập tự do
       if (q) {
         const qn = normalize(q);
         const beforeQ = list;
         const filteredQ = list.filter(p => joinText(p).includes(qn));
-        // fallback: if no match, keep list from need/category
+        // dự phòng: nếu không khớp, giữ danh sách sau khi lọc theo nhu cầu/danh mục
         if (filteredQ.length) {
           list = filteredQ;
         } else {
@@ -979,7 +979,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
 
-      // sort
+      // sắp xếp
       if (sort === 'best') {
         list.sort((a, b) => (parseFloat(b.rate || '0') - parseFloat(a.rate || '0')));
       } else if (sort === 'new') {
@@ -1219,7 +1219,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// *** hero quick search (index.html)
+// *** tìm nhanh ở banner hero (index.html)
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('quickSearchForm');
   if (!form) return;
