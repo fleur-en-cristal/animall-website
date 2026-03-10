@@ -2853,6 +2853,12 @@ body:not(.is-auth) .head-icon{
 }
 /** FIX GIAO DIỆN CONTACT HOÀN CHỈNH (FINAL) */
 
+body.contact-page .contact-note.page-section {
+    max-width: 550px;
+    width: 95%;
+    margin: 48px auto 20px;
+}
+
 /** thiết lập trang web là một khối dọc (Flex column) full màn hình */
 html, body {
     height: 100%;         /* ép trang web cao bằng màn hình */
@@ -2863,6 +2869,7 @@ html, body {
 
 /**căn chỉnh Form: giảm khoảng cách thừa ở dưới */
 #contactForm.page-section {
+    margin-top: 20px !important;
     margin-bottom: 40px !important; /*giảm margin dưới để đỡ bị khoảng trống quá lớn */
     flex-shrink: 0; /* đảm bảo form không bị co lại */
     max-width: 550px !important;

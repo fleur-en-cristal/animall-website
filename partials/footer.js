@@ -8,7 +8,7 @@ document.write(`
   <div class="footer">
     <div class="footer-left">
       <!-- Thông tin bản quyền -->
-      <p>© 2025 <span>Animall</span>. All rights reserved.</p>
+      <p>© 2026 <span>Animall</span>. All rights reserved.</p>
     </div>
 
     <div class="footer-right">
